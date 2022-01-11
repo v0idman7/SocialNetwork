@@ -1,0 +1,18 @@
+.messageItem {
+  width: 40%;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 20px;
+
+  &__text {
+    margin: 0;
+  }
+}
+
+.my {
+  margin-right: auto;
+}
+
+.friend {
+  margin-left: auto;
+}

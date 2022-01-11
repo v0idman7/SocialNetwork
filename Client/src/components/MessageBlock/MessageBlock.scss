@@ -1,0 +1,59 @@
+.messageBlock {
+  position: fixed;
+  top: 0;
+  left: 340px;
+  width: calc(100vw - 340px);
+  height: 100vh;
+
+  &__header {
+    display: flex;
+    margin: 10px 50px;
+
+    &__photo {
+      width: 70px;
+      height: 70px;
+      border-radius: 20%;
+    }
+
+    &__name {
+      margin-left: 20px;
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 70px;
+    }
+  }
+
+  &__line {
+    margin: 10px auto;
+    border: 1px solid #b5b5b5;
+  }
+
+  &__chat {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    width: 100%;
+    height: calc(100vh - 160px);
+    margin: auto 0 0 0;
+    padding: 0 10px;
+  }
+
+  &__inputBlock {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px auto;
+
+    &__input {
+      width: 70%;
+      height: 30px;
+      box-sizing: border-box;
+      border-radius: 7px;
+    }
+
+    &__send {
+      width: 20%;
+      height: 30px;
+      border-radius: 7px;
+    }
+  }
+}

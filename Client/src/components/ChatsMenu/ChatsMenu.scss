@@ -1,0 +1,51 @@
+.chatsMenu {
+  position: fixed;
+  top: 0;
+  left: 70px;
+  width: 250px;
+  height: 100vh;
+  margin: 0;
+  padding: 10px;
+  background: rgba(37, 39, 42, 0.75);
+  mix-blend-mode: normal;
+
+  &::before {
+    content: url('../../images/Search.svg');
+    position: absolute;
+    top: 17px;
+    left: 17px;
+  }
+
+  &__search {
+    height: 30px;
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    border-radius: 7px;
+    padding-left: 21px;
+  }
+
+  &__line {
+    margin: 10px auto;
+    border: 1px solid #b5b5b5;
+  }
+
+  &__list {
+    display: flex;
+    height: calc(100vh - 62px);
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      border-radius: 6px;
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+  }
+}

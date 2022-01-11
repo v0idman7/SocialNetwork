@@ -1,0 +1,53 @@
+.chatsItem {
+
+  &__main {
+    display: flex;
+  }
+
+  &__photoWrap {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+
+    &__photo {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
+
+    &__Message {
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: block;
+      width: 20px;
+      height: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 50%;
+      background-color: rgba(88, 88, 255, 0.9);
+      color: #b5b5b5;
+      line-height: 20px;
+      text-align: center;
+    }
+  }
+  
+  &__profileName {
+    margin-left: 10px;
+    color: #b5b5b5;
+    line-height: 70px;
+  }
+
+  &__line {
+    width: 220px;
+    margin: 5px auto;
+    border: 1px solid #b5b5b5;
+  }
+
+  &:last-of-type {
+    .chatsItem__line {
+      border: 0;
+    }
+  }
+}
