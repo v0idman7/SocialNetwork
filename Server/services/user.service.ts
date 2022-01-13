@@ -73,4 +73,14 @@ export default class UserService {
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
     return { ...tokens, user: userDto };
   }
+
+  async getUserData(id: number) {
+    const userData = await User.findOne({ where: { id } });
+
+    if (!userData) {
+      throw ApiError.UnauthorizedError();
+    }
+
+    return userData;
+  }
 }

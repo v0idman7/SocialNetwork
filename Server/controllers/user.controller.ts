@@ -1,4 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
+import ApiError from '../exceptions/api.error';
+import { AuthRequest } from '../middlewares/auth.middleware';
 import UserService from '../services/user.service';
 
 export default class UserController {
@@ -65,6 +67,19 @@ export default class UserController {
         httpOnly: true,
       });
       return res.json(userData);
+    } catch (e) {
+      next(e);
+    }
+    return null;
+  }
+
+  async getUserData(req: AuthRequest, res: Response, next: NextFunction) {
+    try {
+      if (typeof req.user !== 'string') {
+        const userData = await this.service.getUserData(req.user?.id);
+        return res.json(userData);
+      }
+      throw ApiError.UnauthorizedError();
     } catch (e) {
       next(e);
     }

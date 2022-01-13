@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import UserController from '../controllers/user.controller';
+import authentication from '../middlewares/auth.middleware';
 
 const userRouter = Router();
 const userController = new UserController();
@@ -15,6 +16,10 @@ userRouter.post('/logout', (req, res, next) =>
 );
 userRouter.post('/refresh', (req, res, next) =>
   userController.refresh(req, res, next)
+);
+
+userRouter.get('/', authentication, (req, res, next) =>
+  userController.getUserData(req, res, next)
 );
 
 export default userRouter;

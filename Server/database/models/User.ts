@@ -33,7 +33,7 @@ export const User = sequelize.define<UserInstance>(
       allowNull: false,
     },
     phone: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     password: {

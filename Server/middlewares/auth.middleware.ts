@@ -9,11 +9,7 @@ export interface AuthRequest extends Request {
   user?: JwtPayload | string;
 }
 
-export default function authentication(
-  req: AuthRequest,
-  res: Response,
-  next: NextFunction
-) {
+function authentication(req: AuthRequest, res: Response, next: NextFunction) {
   try {
     const authorizationHeader = req.headers.authorization;
     if (!authorizationHeader) {
@@ -34,3 +30,5 @@ export default function authentication(
   }
   return null;
 }
+
+export default authentication;
