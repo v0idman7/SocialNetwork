@@ -82,4 +82,10 @@
 .settings-icon {
   background: url('../../images/settings.png');
   background-size: 50px, 50px;
+  border: 0;
+  color: transparent;
+}
+
+.disabled-link {
+  pointer-events: none;
 }
