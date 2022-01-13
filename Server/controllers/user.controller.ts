@@ -10,13 +10,11 @@ export default class UserController {
 
   async registration(req: Request, res: Response, next: NextFunction) {
     try {
-      const { firstName, lastName, phone, username, email, password } =
-        req.body;
+      const { firstName, lastName, phone, email, password } = req.body;
       const userData = await this.service.registration(
         firstName,
         lastName,
         phone,
-        username,
         email,
         password
       );

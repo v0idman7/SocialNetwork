@@ -11,7 +11,6 @@ export default class UserService {
     firstName: string,
     lastName: string,
     phone: number,
-    username: string,
     email: string,
     password: string
   ) {
@@ -25,7 +24,6 @@ export default class UserService {
       firstName,
       lastName,
       phone,
-      username,
       email,
       password: bcrypt.hashSync(password, 7),
     });
