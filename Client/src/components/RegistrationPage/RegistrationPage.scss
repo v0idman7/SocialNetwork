@@ -8,6 +8,7 @@
   height: 100vh;
   padding-top: 100px;
   box-sizing: border-box;
+  background-color: rgba(255, 255, 255, 0.7);
 
   &__inputWrap {
     width: 400px;
@@ -18,7 +19,6 @@
   &__inputLabel {
     font-size: 12px;
     font-weight: 400;
-    color: #706e6b;
     margin-bottom: 25px;
   }
 

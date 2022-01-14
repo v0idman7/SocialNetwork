@@ -1,0 +1,79 @@
+.profileInfo {
+  position: fixed;
+  top: 0;
+  right: 0;
+  display: flex;
+  width: 250px;
+  height: 100vh;
+  flex-direction: column;
+  background-color: rgba(255, 255, 255, 0.8);
+
+  &__photo {
+    height: 250px;
+  }
+
+  &__name {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 20px;
+  }
+
+  &__links {
+    display: flex;
+    padding: 0 25px;
+    justify-content: space-around;
+    list-style: none;
+  }
+
+  &__link {
+  }
+
+  &__contacts {
+  }
+
+  &__friends {
+  }
+}
+
+.socialLink {
+  display: block;
+  width: 25px;
+  height: 25px;
+  color: transparent;
+}
+
+.instagram {
+  background: url('../../images/social-instagram.svg');
+  background-size: 25px 25px;
+}
+
+.facebook {
+  background: url('../../images/social-facebook.svg');
+  background-size: 25px 25px;
+}
+
+.github {
+  background: url('../../images/social-github.svg');
+  background-size: 25px 25px;
+}
+
+.linkedIn {
+  background: url('../../images/social-linkedin.svg');
+  background-size: 25px 25px;
+}
+
+.contact {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+
+  &__name {
+    font-size: 12px;
+    color: #5f6164;
+  }
+  &__item {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+}

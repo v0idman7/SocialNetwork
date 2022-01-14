@@ -4,13 +4,15 @@ import './MainNavigation.scss';
 
 type MainNavigationType = {
   disable?: boolean;
+  auth: (login: boolean) => void;
 };
 
-const MainNavigation: React.FC<MainNavigationType> = ({ disable }) => {
+const MainNavigation: React.FC<MainNavigationType> = ({ disable, auth }) => {
   const navigate = useNavigate();
 
   const logoutClick = async () => {
     await userLogout();
+    auth(false);
     navigate('/');
   };
 

@@ -1,21 +1,48 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { getUserData } from '../../services/user';
 import ChatsMenu from '../ChatsMenu/ChatsMenu';
 import LoginPage from '../LoginPage/LoginPage';
 import MainNavigation from '../MainNavigation/MainNavigation';
+import ProfileInfo from '../ProfileInfo/ProfileInfo';
 import RegistrationPage from '../RegistrationPage/RegistrationPage';
 import './App.scss';
 
-const App = () => (
-  <Routes>
-    <Route path='/login' element={<LoginPage />} />
-    <Route path='/registration' element={<RegistrationPage />} />
-    <Route path='/' element={<MainNavigation />}>
-      <Route index element={<ChatsMenu />} />
-      <Route path='chats' element={<ChatsMenu />} />
-    </Route>
-  </Routes>
-);
+const App = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    localStorage.getItem('isAuthenticated')
+  );
+
+  const changeAuth = (login: boolean) => {
+    if (login) {
+      localStorage.setItem('isAuthenticated', 'true');
+      setIsAuthenticated('true');
+    } else {
+      localStorage.removeItem('isAuthenticated');
+      setIsAuthenticated(null);
+    }
+  };
+
+  if (isAuthenticated) {
+    return (
+      <Routes>
+        <Route path='/' element={<MainNavigation auth={changeAuth} />}>
+          <Route index element={<ProfileInfo />} />
+          <Route path='chats' element={<ChatsMenu />} />
+        </Route>
+      </Routes>
+    );
+  }
+  return (
+    <Routes>
+      <Route path='/' element={<MainNavigation disable auth={changeAuth} />}>
+        <Route index element={<LoginPage auth={changeAuth} />} />
+        <Route
+          path='/registration'
+          element={<RegistrationPage auth={changeAuth} />}
+        />
+      </Route>
+    </Routes>
+  );
+};
 
 export default App;
