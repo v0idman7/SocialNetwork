@@ -6,7 +6,7 @@ type payloadType = { email: string; id: number };
 export default class TokenService {
   generateTokens = (payload: payloadType) => {
     const accessToken = jwt.sign(payload, 'jwt-secret-key', {
-      expiresIn: '30m',
+      expiresIn: '1d',
     });
     const refreshToken = jwt.sign(payload, 'jwt-refresh-secret-key', {
       expiresIn: '10d',
