@@ -75,7 +75,10 @@ export default class UserService {
   }
 
   async getUserData(id: number) {
-    const userData = await User.findOne({ where: { id } });
+    const userData = await User.findOne({
+      attributes: { exclude: ['password'] },
+      where: { id },
+    });
 
     if (!userData) {
       throw ApiError.UnauthorizedError();

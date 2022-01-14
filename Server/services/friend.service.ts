@@ -3,7 +3,10 @@ import ApiError from '../exceptions/api.error';
 
 export default class FriendService {
   async get(userID: number) {
-    const user = await User.findOne({ where: { id: userID } });
+    const user = await User.findOne({
+      attributes: { exclude: ['password'] },
+      where: { id: userID },
+    });
     if (!user) {
       throw ApiError.BadRequest('Такого пользователя не существует');
     }
@@ -15,7 +18,11 @@ export default class FriendService {
 
     const result = await Promise.all(
       userFriends.map(
-        async (friend) => await User.findOne({ where: { id: +friend } })
+        async (friend) =>
+          await User.findOne({
+            attributes: { exclude: ['password'] },
+            where: { id: +friend },
+          })
       )
     );
 
