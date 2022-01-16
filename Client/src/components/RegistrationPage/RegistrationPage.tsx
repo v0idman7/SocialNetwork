@@ -3,6 +3,7 @@ import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { userRegistration } from '../../services/auth';
+import { uploadImage } from '../../services/upload';
 
 interface RegistrationValues {
   firstName: string;
@@ -11,6 +12,7 @@ interface RegistrationValues {
   phone: string;
   password: string;
   confirmPassword: string;
+  file: Blob | '';
 }
 
 const RegistrationPage = ({ auth }: { auth: (login: boolean) => void }) => {
@@ -21,12 +23,20 @@ const RegistrationPage = ({ auth }: { auth: (login: boolean) => void }) => {
     phone: '',
     password: '',
     confirmPassword: '',
+    file: '',
   };
 
   const phoneRegExp =
     /^\s{0,}\+{1,1}375\s{0,}\({0,1}(([2]{1}([5]{1}|[9]{1}))|([3]{1}[3]{1})|([4]{1}[4]{1}))\){0,1}\s{0,}\s{0,}[0-9]{3,3}\s{0,}[0-9]{4,4}$/;
 
   const navigate = useNavigate();
+
+  const sendFile = (img: Blob | string, id: number) => {
+    if (img === '') return null;
+    const data = new FormData();
+    data.append('profile', img);
+    return uploadImage(data, id);
+  };
 
   return (
     <Formik
@@ -57,7 +67,8 @@ const RegistrationPage = ({ auth }: { auth: (login: boolean) => void }) => {
           phone: values.phone,
           password: values.password,
         })
-          .then(() => {
+          .then(async (id) => {
+            await sendFile(values.file, id);
             auth(true);
             navigate(`/`);
           })
@@ -72,6 +83,7 @@ const RegistrationPage = ({ auth }: { auth: (login: boolean) => void }) => {
         handleChange,
         handleBlur,
         resetForm,
+        setFieldValue,
       }) => (
         <Form className='registration'>
           <div className='registration__inputWrap'>
@@ -184,6 +196,19 @@ const RegistrationPage = ({ auth }: { auth: (login: boolean) => void }) => {
                 {errors.confirmPassword}
               </div>
             )}
+          </div>
+          <div className='registration__inputWrap'>
+            <input
+              id='file'
+              name='file'
+              type='file'
+              onChange={(event) => {
+                const input = event.currentTarget.files;
+                if (input) {
+                  setFieldValue('file', input[0]);
+                }
+              }}
+            />
           </div>
           <div className='registration__buttonsWrap'>
             {status && (

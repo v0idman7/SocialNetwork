@@ -21,7 +21,7 @@
 
   &__links {
     display: flex;
-    padding: 0 25px;
+    padding: 0 10px;
     justify-content: space-around;
     list-style: none;
   }
@@ -36,31 +36,32 @@
   }
 }
 
-.socialLink {
-  display: block;
-  width: 25px;
-  height: 25px;
-  color: transparent;
+.vk {
+  background: url('../../images/vk.png');
 }
 
 .instagram {
-  background: url('../../images/social-instagram.svg');
-  background-size: 25px 25px;
+  background: url('../../images/instagram.png');
 }
 
 .facebook {
-  background: url('../../images/social-facebook.svg');
-  background-size: 25px 25px;
+  background: url('../../images/facebook.png');
 }
 
 .github {
-  background: url('../../images/social-github.svg');
-  background-size: 25px 25px;
+  background: url('../../images/github.png');
 }
 
 .linkedIn {
-  background: url('../../images/social-linkedin.svg');
-  background-size: 25px 25px;
+  background: url('../../images/linkedin.png');
+}
+
+.socialLink {
+  display: block;
+  width: 35px;
+  height: 35px;
+  color: transparent;
+  background-size: 35px 35px;
 }
 
 .contact {
