@@ -8,9 +8,15 @@ import errorMiddleware from './middlewares/error.middleware';
 
 const app: express.Application = express();
 
-app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(express.json());
+app.use(
+  cors({
+    credentials: true,
+    origin: 'http://localhost:3001',
+    optionsSuccessStatus: 200,
+  })
+);
 app.use('/', router);
 app.use(errorMiddleware);
 app.use('/images', express.static(path.resolve(__dirname, 'images')));
