@@ -4,6 +4,7 @@ export const userLogin = (signInData: { email: string; password: string }) =>
     headers: {
       'Content-Type': 'application/json',
     },
+    credentials: 'include',
     body: JSON.stringify(signInData),
   })
     .then(async (res) => {
@@ -31,6 +32,7 @@ export const userRegistration = (registrationData: {
     headers: {
       'Content-Type': 'application/json',
     },
+    credentials: 'include',
     body: JSON.stringify(registrationData),
   })
     .then(async (res) => {
@@ -52,6 +54,7 @@ export const userLogout = () =>
     headers: {
       'Content-Type': 'application/json',
     },
+    credentials: 'include',
   })
     .then((responce) => responce.json())
     .then(() => localStorage.removeItem('Authorization'))
@@ -63,6 +66,7 @@ export const refreshToken = () =>
     headers: {
       'Content-Type': 'application/json',
     },
+    credentials: 'include',
   })
     .then((responce) => responce.json())
     .then((result) =>
