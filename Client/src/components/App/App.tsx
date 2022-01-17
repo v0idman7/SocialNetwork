@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import ChatsMenu from '../ChatsMenu/ChatsMenu';
 import LoginPage from '../LoginPage/LoginPage';
 import MainNavigation from '../MainNavigation/MainNavigation';
-import ProfileInfo from '../ProfileInfo/ProfileInfo';
+import ProfilePage from '../ProfilePage/ProfilePage';
 import RegistrationPage from '../RegistrationPage/RegistrationPage';
 import './App.scss';
 
@@ -26,7 +26,7 @@ const App = () => {
     return (
       <Routes>
         <Route path='/' element={<MainNavigation auth={changeAuth} />}>
-          <Route index element={<ProfileInfo />} />
+          <Route index element={<ProfilePage />} />
           <Route path='chats' element={<ChatsMenu />} />
         </Route>
       </Routes>

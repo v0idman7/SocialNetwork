@@ -2,8 +2,11 @@ import './RegistrationPage.scss';
 import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { userRegistration } from '../../services/auth';
 import { uploadImage } from '../../services/upload';
+import add from '../../images/add.svg';
+import UploadButton from '../UploadButton/UploadButton';
 
 interface RegistrationValues {
   firstName: string;
@@ -16,6 +19,8 @@ interface RegistrationValues {
 }
 
 const RegistrationPage = ({ auth }: { auth: (login: boolean) => void }) => {
+  const [countFiles, setCountFiles] = useState(0);
+
   const initialValues: RegistrationValues = {
     firstName: '',
     lastName: '',
@@ -197,19 +202,42 @@ const RegistrationPage = ({ auth }: { auth: (login: boolean) => void }) => {
               </div>
             )}
           </div>
-          <div className='registration__inputWrap'>
+          <div className='registration__inputWrap registration__upload'>
+            <UploadButton
+              setValue={(value: any) => setFieldValue('file', value)}
+            />
+          </div>
+          {/* <div className='registration__inputWrap'>
             <input
-              id='file'
               name='file'
               type='file'
+              id='inputFile'
+              className='inputFile'
+              multiple
               onChange={(event) => {
                 const input = event.currentTarget.files;
                 if (input) {
                   setFieldValue('file', input[0]);
                 }
+                if (input && input?.length >= 1) {
+                  setCountFiles(input.length);
+                } else setCountFiles(0);
               }}
             />
-          </div>
+            <label htmlFor='inputFile' className='inputFile__button'>
+              <span className='inputFile__iconWrapper'>
+                <img
+                  className='inputFile__icon'
+                  src={add}
+                  alt='Выбрать файл'
+                  width='25'
+                />
+              </span>
+              <span className='inputFile__buttonText'>
+                {countFiles ? `Выбрано фото: ${countFiles}` : 'Выберите фото'}
+              </span>
+            </label>
+          </div> */}
           <div className='registration__buttonsWrap'>
             {status && (
               <div className='registration__submitAlert'>{status}</div>

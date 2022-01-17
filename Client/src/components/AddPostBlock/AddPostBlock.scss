@@ -1,0 +1,31 @@
+.addPostBlock {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 180px;
+
+  &__textarea {
+    display: block;
+    width: 90%;
+    height: 100px;
+    margin: 0 auto;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  &__buttons {
+    display: flex;
+    width: 90%;
+    margin: 0 auto;
+    justify-content: space-between;
+  }
+
+  &__uploadButton {
+    margin: 0;
+  }
+
+  &__submitButton {
+    width: 250px;
+  }
+}

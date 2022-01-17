@@ -1,3 +1,11 @@
+export const getAuthorization = () => {
+  const authorization = localStorage.getItem('Authorization');
+  if (!authorization) {
+    return '';
+  }
+  return authorization;
+};
+
 export const userLogin = (signInData: { email: string; password: string }) =>
   fetch(`http://localhost:3000/api/user/login`, {
     method: 'POST',
