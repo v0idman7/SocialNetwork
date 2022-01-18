@@ -1,6 +1,7 @@
 import { Field, Form, Formik } from 'formik';
 import { useState } from 'react';
-import add from '../../images/add.svg';
+import { addPost } from '../../services/post';
+import { uploadManyImages } from '../../services/upload';
 import UploadButton from '../UploadButton/UploadButton';
 import './AddPostBlock.scss';
 
@@ -11,7 +12,6 @@ type PostValues = {
 
 const AddPostBlock = () => {
   const [countFiles, setCountFiles] = useState(0);
-
   const initialValues: PostValues = {
     text: '',
     files: null,
@@ -20,32 +20,25 @@ const AddPostBlock = () => {
     <Formik
       initialValues={initialValues}
       validateOnBlur
-      onSubmit={(values, actions) => {
-        /* userRegistration({
-          firstName: values.firstName,
-          lastName: values.lastName,
-          email: values.email,
-          phone: values.phone,
-          password: values.password,
-        })
-          .then(async (id) => {
-            await sendFile(values.file, id);
-            auth(true);
-            navigate(`/`);
-          })
-          .catch((error) => actions.setStatus(error.message)); */
+      onSubmit={async (values, { resetForm }) => {
+        if (
+          values.text ||
+          (values.files !== null && values.files.length !== 0)
+        ) {
+          if (values.files !== null && values.files.length !== 0) {
+            const data = new FormData();
+            for (let i = 0; i < values.files.length; i += 1) {
+              data.append('images', values.files[i]);
+            }
+            const files = await uploadManyImages(data);
+            addPost(values.text, files.join(' '));
+          } else addPost(values.text, '');
+        }
+        setCountFiles(0);
+        resetForm();
       }}
     >
-      {({
-        values,
-        errors,
-        status,
-        touched,
-        handleChange,
-        handleBlur,
-        resetForm,
-        setFieldValue,
-      }) => (
+      {({ setFieldValue }) => (
         <Form className='addPostBlock'>
           <Field
             as='textarea'
@@ -55,7 +48,12 @@ const AddPostBlock = () => {
           />
           <div className='addPostBlock__buttons'>
             <UploadButton
-              setValue={(value: any) => setFieldValue('files', value)}
+              countFiles={countFiles}
+              setCountFiles={setCountFiles}
+              one={false}
+              setValue={(value: File | FileList) =>
+                setFieldValue('files', value)
+              }
             />
             <button type='submit' className='addPostBlock__submitButton'>
               Add

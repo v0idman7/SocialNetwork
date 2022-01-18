@@ -6,7 +6,6 @@ import './ProfilePostBlock.scss';
 
 type PostType = {
   id: number;
-  name: string;
   text: string;
   photo: string;
 };
@@ -27,12 +26,7 @@ const ProfilePostBlock = () => {
       <ul className='profilePostBlock__list'>
         {posts &&
           posts.map((post: PostType) => (
-            <ProfilePost
-              key={post.id}
-              name={post.name}
-              text={post.text}
-              photo={post.photo}
-            />
+            <ProfilePost key={post.id} text={post.text} photo={post.photo} />
           ))}
       </ul>
     </div>

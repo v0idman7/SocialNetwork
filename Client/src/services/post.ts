@@ -18,14 +18,14 @@ export const getProfilePost = () =>
     .then((responce) => responce.json())
     .catch((e) => console.error(e));
 
-export const addPost = (text: string) => {
+export const addPost = (text: string, filesname: string) => {
   fetch(`http://localhost:3000/api/post`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: getAuthorization(),
     },
-    body: text,
+    body: JSON.stringify({ text, filesname }),
   })
     .then(async (res) => {
       if (res.status !== 200) {

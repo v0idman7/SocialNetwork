@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { userRegistration } from '../../services/auth';
 import { uploadImage } from '../../services/upload';
-import add from '../../images/add.svg';
 import UploadButton from '../UploadButton/UploadButton';
 
 interface RegistrationValues {
@@ -204,6 +203,9 @@ const RegistrationPage = ({ auth }: { auth: (login: boolean) => void }) => {
           </div>
           <div className='registration__inputWrap registration__upload'>
             <UploadButton
+              countFiles={countFiles}
+              setCountFiles={setCountFiles}
+              one
               setValue={(value: any) => setFieldValue('file', value)}
             />
           </div>
