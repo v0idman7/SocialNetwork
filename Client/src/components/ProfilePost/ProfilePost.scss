@@ -1,3 +1,5 @@
+@import '~react-image-gallery/styles/scss/image-gallery.scss';
+
 .profilePost {
   width: 80%;
   padding: 20px;
@@ -7,13 +9,31 @@
 
   &__text {
     text-align: justify;
-    margin: 0;
+    margin: 15px 0 0;
   }
 
   &__photo {
     display: block;
-    width: 250px;
-    margin: 0 auto;
+    width: 400px;
+    margin: 15px auto 0;
     border-radius: 10px;
+  }
+
+  &__user {
+    display: flex;
+    margin-bottom: 15px;
+  }
+
+  &__userPhoto {
+    width: 50px;
+    border-radius: 25px;
+  }
+
+  &__userName {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    margin-left: 15px;
+    line-height: 50px;
   }
 }

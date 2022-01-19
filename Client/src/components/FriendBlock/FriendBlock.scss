@@ -1,0 +1,50 @@
+.friendBlock {
+  position: absolute;
+  margin-top: 20px;
+  left: 0;
+  z-index: -1;
+
+  &__lineBlock {
+    position: relative;
+  }
+
+  &__line {
+    margin: 15px 20px;
+    width: 360px;
+    border: solid 1px rgb(24, 129, 250);
+  }
+
+  &__lineText {
+    position: absolute;
+    display: block;
+    left: 50%;
+    top: 0;
+    padding: 0 10px;
+    line-height: 32px;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    background-color: rgb(24, 129, 250);
+    border-radius: 15px;
+    transform: translate(-50%, -50%);
+  }
+
+  &__user {
+    display: flex;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  &__userPhoto {
+    width: 50px;
+    border-radius: 25px;
+  }
+
+  &__userName {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    margin-left: 15px;
+    line-height: 50px;
+  }
+}

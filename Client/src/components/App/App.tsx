@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import ChatsMenu from '../ChatsMenu/ChatsMenu';
+import FriendPage from '../FriendPage/FriendPage';
 import LoginPage from '../LoginPage/LoginPage';
 import MainNavigation from '../MainNavigation/MainNavigation';
 import ProfilePage from '../ProfilePage/ProfilePage';
@@ -28,6 +29,8 @@ const App = () => {
         <Route path='/' element={<MainNavigation auth={changeAuth} />}>
           <Route index element={<ProfilePage />} />
           <Route path='chats' element={<ChatsMenu />} />
+          <Route path='friends' element={<FriendPage />} />
+          <Route path='profile' element={<ProfilePage />} />
         </Route>
       </Routes>
     );

@@ -206,40 +206,11 @@ const RegistrationPage = ({ auth }: { auth: (login: boolean) => void }) => {
               countFiles={countFiles}
               setCountFiles={setCountFiles}
               one
-              setValue={(value: any) => setFieldValue('file', value)}
+              setValue={(value: FileList | File) =>
+                setFieldValue('file', value)
+              }
             />
           </div>
-          {/* <div className='registration__inputWrap'>
-            <input
-              name='file'
-              type='file'
-              id='inputFile'
-              className='inputFile'
-              multiple
-              onChange={(event) => {
-                const input = event.currentTarget.files;
-                if (input) {
-                  setFieldValue('file', input[0]);
-                }
-                if (input && input?.length >= 1) {
-                  setCountFiles(input.length);
-                } else setCountFiles(0);
-              }}
-            />
-            <label htmlFor='inputFile' className='inputFile__button'>
-              <span className='inputFile__iconWrapper'>
-                <img
-                  className='inputFile__icon'
-                  src={add}
-                  alt='Выбрать файл'
-                  width='25'
-                />
-              </span>
-              <span className='inputFile__buttonText'>
-                {countFiles ? `Выбрано фото: ${countFiles}` : 'Выберите фото'}
-              </span>
-            </label>
-          </div> */}
           <div className='registration__buttonsWrap'>
             {status && (
               <div className='registration__submitAlert'>{status}</div>

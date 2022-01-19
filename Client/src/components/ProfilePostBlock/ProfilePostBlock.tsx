@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { getProfilePost } from '../../services/post';
 import AddPostBlock from '../AddPostBlock/AddPostBlock';
 import ProfilePost from '../ProfilePost/ProfilePost';
@@ -8,6 +8,11 @@ type PostType = {
   id: number;
   text: string;
   photo: string;
+  User: {
+    firstName: string;
+    lastName: string;
+    photo: string;
+  };
 };
 
 const ProfilePostBlock = () => {
@@ -26,7 +31,15 @@ const ProfilePostBlock = () => {
       <ul className='profilePostBlock__list'>
         {posts &&
           posts.map((post: PostType) => (
-            <ProfilePost key={post.id} text={post.text} photo={post.photo} />
+            <ProfilePost
+              key={post.id}
+              text={post.text}
+              photo={post.photo}
+              user={{
+                userPhoto: post.User.photo,
+                userName: `${post.User.firstName} ${post.User.lastName}`,
+              }}
+            />
           ))}
       </ul>
     </div>
