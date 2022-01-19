@@ -10,6 +10,7 @@ type UserType = {
   email: string;
   phone: string;
   photo: string;
+  friends: string;
 };
 
 type ProfileType = {
@@ -79,12 +80,23 @@ const ProfileInfo = () => {
         <span className='contact__name'>Phone</span>
         <span className='contact__item'>{profile?.user.phone}</span>
       </div>
+      {profile?.user.friends && (
+        <span className='profileInfo__friendsText'>Friends</span>
+      )}
       <ul className='profileInfo__friends friendsList'>
         {profile?.friends.map((friend) => (
           <li key={friend.id} className='friendsList__item friend'>
             <a href='123' className='friend__link'>
-              <img className='friend__photo' alt='friend' />
-              <span className='friend__name'>{`${friend.firstName} ${friend.lastName}`}</span>
+              <img
+                className='friend__photo'
+                alt='friend'
+                src={
+                  friend.photo
+                    ? `http://localhost:3000/images/${friend.photo}`
+                    : camera
+                }
+              />
+              <span className='friend__name'>{friend.firstName}</span>
             </a>
           </li>
         ))}
