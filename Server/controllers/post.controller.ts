@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import PostService from '../services/post.service';
 import ApiError from '../exceptions/api.error';
 import { AuthRequest } from '../middlewares/auth.middleware';
@@ -42,8 +42,8 @@ export default class PostController {
       if (typeof req.user !== 'string') {
         userID = req.user?.id;
       }
-      const { name, text, photo } = req.body;
-      const postData = await this.service.add(userID, name, text, photo);
+      const { text, filesname } = req.body;
+      const postData = await this.service.add(userID, text, filesname);
       return res.json(postData);
     } catch (e) {
       next(e);
@@ -57,14 +57,8 @@ export default class PostController {
       if (typeof req.user !== 'string') {
         userID = req.user?.id;
       }
-      const { postID, name, text, photo } = req.body;
-      const postData = await this.service.update(
-        userID,
-        postID,
-        name,
-        text,
-        photo
-      );
+      const { postID, text, photo } = req.body;
+      const postData = await this.service.update(userID, postID, text, photo);
       return res.json(postData);
     } catch (e) {
       next(e);

@@ -39,3 +39,9 @@ export const LikePost = sequelize.define<LikePostInstance>(
     timestamps: false,
   }
 );
+
+LikePost.belongsTo(User, { foreignKey: 'user_id', constraints: false });
+User.hasMany(LikePost, { foreignKey: 'user_id', constraints: false });
+
+LikePost.belongsTo(Post, { foreignKey: 'post_id', constraints: false });
+Post.hasMany(LikePost, { foreignKey: 'post_id', constraints: false });

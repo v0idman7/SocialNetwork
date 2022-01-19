@@ -34,3 +34,6 @@ export const Token = sequelize.define<TokenInstance>(
     timestamps: false,
   }
 );
+
+Token.belongsTo(User, { foreignKey: 'user_id', constraints: false });
+User.hasMany(Token, { foreignKey: 'user_id', constraints: false });

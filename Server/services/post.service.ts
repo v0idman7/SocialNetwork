@@ -10,6 +10,12 @@ export default class PostService {
     }
 
     const result = await Post.findAll({
+      include: [
+        {
+          model: User,
+          attributes: ['firstName', 'lastName', 'photo'],
+        },
+      ],
       where: { user_id: userID },
       order: [['id', 'ASC']],
     });
@@ -30,33 +36,34 @@ export default class PostService {
     const result: Array<PostInstance | null> = [];
     const friendsPosts = await Promise.all(
       userFriends.map(async (friend) =>
-        Post.findAll({ where: { user_id: +friend } })
+        Post.findAll({
+          include: [
+            {
+              model: User,
+              attributes: ['firstName', 'lastName', 'photo' as 'userPhoto'],
+            },
+          ],
+          where: { user_id: +friend },
+        })
       )
     );
     return result.concat(...friendsPosts);
   }
 
-  async add(userID: number, name: string, text: string, photo: string) {
+  async add(userID: number, text: string, filesname: string) {
     const user = await User.findOne({ where: { id: userID } });
     if (!user) {
       throw ApiError.BadRequest('Такого пользователя не существует');
     }
     const post = await Post.create({
-      name,
       text,
-      photo,
+      photo: filesname,
       user_id: userID,
     });
     return post;
   }
 
-  async update(
-    userID: number,
-    postID: number,
-    name: string,
-    text: string,
-    photo: string
-  ) {
+  async update(userID: number, postID: number, text: string, photo: string) {
     const post = await Post.findOne({ where: { id: postID } });
     if (!post) {
       throw ApiError.BadRequest('Такого поста не существует');
@@ -66,7 +73,6 @@ export default class PostService {
     }
     const updatedPost = await Post.update(
       {
-        name,
         text,
         photo,
       },

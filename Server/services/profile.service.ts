@@ -2,7 +2,7 @@ import ApiError from '../exceptions/api.error';
 import { User } from '../database/models/User';
 import { Social } from '../database/models/Social';
 
-export default class UserService {
+export default class ProfileService {
   async getUserData(id: number) {
     const userData = await User.findOne({
       attributes: { exclude: ['password'] },

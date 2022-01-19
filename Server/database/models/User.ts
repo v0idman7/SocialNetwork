@@ -1,4 +1,5 @@
 import { DataTypes, Model } from 'sequelize';
+import { Post } from '.';
 import sequelize from '../database.state';
 
 export interface UserInstance extends Model {

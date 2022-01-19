@@ -1,10 +1,10 @@
 import { User } from '../database/models/User';
 import ApiError from '../exceptions/api.error';
+import { Op } from 'sequelize';
 
 export default class FriendService {
-  async get(userID: number) {
+  async getFriends(userID: number) {
     const user = await User.findOne({
-      attributes: { exclude: ['password'] },
       where: { id: userID },
     });
     if (!user) {
@@ -16,15 +16,41 @@ export default class FriendService {
       throw ApiError.BadRequest('У этого пользователя нет друзей');
     }
 
-    const result = await Promise.all(
-      userFriends.map(
-        async (friend) =>
-          await User.findOne({
-            attributes: { exclude: ['password'] },
-            where: { id: +friend },
-          })
-      )
-    );
+    const result = await User.findAll({
+      attributes: ['id', 'firstName', 'lastName', 'photo'],
+      where: {
+        id: {
+          [Op.in]: userFriends,
+          [Op.ne]: userID,
+        },
+      },
+    });
+
+    return result;
+  }
+
+  async getOther(userID: number) {
+    const user = await User.findOne({
+      where: { id: userID },
+    });
+    if (!user) {
+      throw ApiError.BadRequest('Такого пользователя не существует');
+    }
+
+    const userFriends = user.friends === '' ? [] : user.friends.split(' ');
+    if (userFriends === []) {
+      throw ApiError.BadRequest('У этого пользователя нет друзей');
+    }
+
+    const result = await User.findAll({
+      attributes: ['id', 'firstName', 'lastName', 'photo'],
+      where: {
+        id: {
+          [Op.notIn]: userFriends,
+          [Op.ne]: userID,
+        },
+      },
+    });
 
     return result;
   }
@@ -78,5 +104,39 @@ export default class FriendService {
     );
 
     return result;
+  }
+
+  async getAll(user_id: number, search?: string) {
+    if (search) {
+      return User.findAll({
+        attributes: ['id', 'firstName', 'lastName', 'photo'],
+        where: {
+          [Op.or]: [
+            {
+              firstName: {
+                [Op.iLike]: `%${search}%`,
+              },
+            },
+            {
+              lastName: {
+                [Op.iLike]: `%${search}%`,
+              },
+            },
+          ],
+          id: {
+            [Op.ne]: user_id,
+          },
+        },
+      });
+    } else {
+      return User.findAll({
+        attributes: ['id', 'firstName', 'lastName', 'photo'],
+        where: {
+          id: {
+            [Op.ne]: user_id,
+          },
+        },
+      });
+    }
   }
 }

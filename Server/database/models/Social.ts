@@ -54,3 +54,6 @@ export const Social = sequelize.define<SocialInstance>(
     timestamps: false,
   }
 );
+
+Social.belongsTo(User, { foreignKey: 'user_id', constraints: false });
+User.hasMany(Social, { foreignKey: 'user_id', constraints: false });
