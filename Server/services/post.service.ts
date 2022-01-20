@@ -1,4 +1,5 @@
-import { Post, PostInstance } from '../database/models/Post';
+import { Op } from 'sequelize';
+import { Post } from '../database/models/Post';
 import { User } from '../database/models/User';
 import ApiError from '../exceptions/api.error';
 
@@ -17,9 +18,38 @@ export default class PostService {
         },
       ],
       where: { user_id: userID },
-      order: [['id', 'ASC']],
+      order: [['id', 'DESC']],
     });
 
+    return result;
+  }
+
+  async getUserAndFriendsPost(userID: number) {
+    const user = await User.findOne({ where: { id: userID } });
+    if (!user) {
+      throw ApiError.BadRequest('Такого пользователя не существует');
+    }
+
+    const userFriends = user.friends === '' ? [] : user.friends.split(' ');
+    if (userFriends === []) {
+      throw ApiError.BadRequest('У этого пользователя нет друзей');
+    }
+
+    const result = await Post.findAll({
+      include: [
+        {
+          model: User,
+          attributes: ['firstName', 'lastName', 'photo'],
+        },
+      ],
+      where: {
+        [Op.or]: [
+          { user_id: { [Op.in]: userFriends } },
+          { user_id: { [Op.eq]: userID } },
+        ],
+      },
+      order: [['id', 'DESC']],
+    });
     return result;
   }
 
@@ -33,21 +63,18 @@ export default class PostService {
     if (userFriends === []) {
       throw ApiError.BadRequest('У этого пользователя нет друзей');
     }
-    const result: Array<PostInstance | null> = [];
-    const friendsPosts = await Promise.all(
-      userFriends.map(async (friend) =>
-        Post.findAll({
-          include: [
-            {
-              model: User,
-              attributes: ['firstName', 'lastName', 'photo' as 'userPhoto'],
-            },
-          ],
-          where: { user_id: +friend },
-        })
-      )
-    );
-    return result.concat(...friendsPosts);
+
+    const result = await Post.findAll({
+      include: [
+        {
+          model: User,
+          attributes: ['firstName', 'lastName', 'photo'],
+        },
+      ],
+      where: { user_id: { [Op.in]: userFriends } },
+      order: [['id', 'DESC']],
+    });
+    return result;
   }
 
   async add(userID: number, text: string, filesname: string) {

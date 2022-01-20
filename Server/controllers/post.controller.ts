@@ -19,13 +19,11 @@ export default class PostController {
       const { user, friend } = req.query;
       let postData = [];
       if (user && !friend) {
-        postData = await this.service.getUserPost(+userID);
+        postData = await this.service.getUserPost(userID);
       } else if (!user && friend) {
-        postData = await this.service.getFriendsPost(+friend);
+        postData = await this.service.getFriendsPost(userID);
       } else if (user && friend) {
-        const userPost = await this.service.getUserPost(+userID);
-        postData = await this.service.getFriendsPost(+friend);
-        postData = postData.concat(userPost);
+        postData = await this.service.getUserAndFriendsPost(userID);
       } else {
         throw ApiError.BadRequest('Запрос с неверными параметрами или без них');
       }
