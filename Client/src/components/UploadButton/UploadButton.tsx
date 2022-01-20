@@ -43,7 +43,7 @@ const UploadButton: React.FC<UploadButtonType> = ({
         />
       </span>
       <span className='inputFile__buttonText'>
-        {countFiles ? `Выбрано фото: ${countFiles}` : 'Выберите фото'}
+        {countFiles ? `${countFiles} photos selected` : 'Select photo'}
       </span>
     </label>
   </div>

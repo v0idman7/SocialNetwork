@@ -38,8 +38,14 @@ export const addPost = (text: string, filesname: string) => {
     .catch((e) => console.error(e));
 };
 
-export const getData = () =>
-  fetch(`http://localhost:3000/api/profile/`)
+export const getNewsPost = () =>
+  fetch(`http://localhost:3000/api/post?user=true&friend=true`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: getAuthorization(),
+    },
+  })
     .then(async (res) => {
       if (res.status !== 200) {
         const responce = await res.json();

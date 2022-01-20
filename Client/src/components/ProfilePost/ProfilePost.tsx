@@ -20,6 +20,7 @@ const ProfilePost: React.FC<ProfilePostType> = ({ text, photo, user }) => {
       setImages(
         photo?.split(' ').map((image) => ({
           original: `http://localhost:3000/images/${image}`,
+          originalHeight: '400px',
         }))
       );
     }

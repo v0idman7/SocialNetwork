@@ -15,17 +15,15 @@ type PostType = {
   };
 };
 
-const ProfilePostBlock = () => {
-  const [posts, setPosts] = useState<Array<PostType> | null>(null);
-
-  useEffect(() => {
-    getProfilePost()
-      .then((result) => setPosts(result))
-      .catch((e) => console.error(e));
-  }, []);
-
-  return (
-    <div className='profilePostBlock'>
+const ProfilePostBlock = ({
+  posts,
+  news,
+}: {
+  posts: Array<PostType>;
+  news?: boolean;
+}) => (
+  <div className={`profilePostBlock ${news ? 'newsPostBlock' : ''}`}>
+    <div className='profilePostBlock__wrap'>
       <AddPostBlock />
       <hr className='profilePostBlock__line' />
       <ul className='profilePostBlock__list'>
@@ -43,7 +41,11 @@ const ProfilePostBlock = () => {
           ))}
       </ul>
     </div>
-  );
+  </div>
+);
+
+ProfilePostBlock.defaultProps = {
+  news: false,
 };
 
 export default ProfilePostBlock;

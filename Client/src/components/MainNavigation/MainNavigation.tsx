@@ -33,7 +33,7 @@ const MainNavigation: React.FC<MainNavigationType> = ({ disable, auth }) => {
               className={`navigationList__item__link news-icon ${
                 disable ? 'disabled-link' : ''
               }`}
-              to='/news'
+              to='/'
             />
           </li>
           <li className='navigationList__item'>

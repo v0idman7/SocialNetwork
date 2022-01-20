@@ -4,6 +4,7 @@ import ChatsMenu from '../ChatsMenu/ChatsMenu';
 import FriendPage from '../FriendPage/FriendPage';
 import LoginPage from '../LoginPage/LoginPage';
 import MainNavigation from '../MainNavigation/MainNavigation';
+import NewsPage from '../NewsPage/NewsPage';
 import ProfilePage from '../ProfilePage/ProfilePage';
 import RegistrationPage from '../RegistrationPage/RegistrationPage';
 import './App.scss';
@@ -27,7 +28,7 @@ const App = () => {
     return (
       <Routes>
         <Route path='/' element={<MainNavigation auth={changeAuth} />}>
-          <Route index element={<ProfilePage />} />
+          <Route index element={<NewsPage />} />
           <Route path='chats' element={<ChatsMenu />} />
           <Route path='friends' element={<FriendPage />} />
           <Route path='profile' element={<ProfilePage />} />

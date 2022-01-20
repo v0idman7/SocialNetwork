@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { getProfilePost } from '../../services/post';
-import ProfileInfo from '../ProfileInfo/ProfileInfo';
+import { getNewsPost } from '../../services/post';
 import ProfilePostBlock from '../ProfilePostBlock/ProfilePostBlock';
+import './NewsPage.scss';
 
 type PostType = {
   id: number;
@@ -14,21 +14,16 @@ type PostType = {
   };
 };
 
-const ProfilePage = () => {
+const NewsPage = () => {
   const [posts, setPosts] = useState<Array<PostType> | null>(null);
 
   useEffect(() => {
-    getProfilePost()
+    getNewsPost()
       .then((result) => setPosts(result))
       .catch((e) => console.error(e));
   }, []);
 
-  return (
-    <>
-      {posts && <ProfilePostBlock posts={posts} />}
-      <ProfileInfo />
-    </>
-  );
+  return posts && <ProfilePostBlock posts={posts} news />;
 };
 
-export default ProfilePage;
+export default NewsPage;

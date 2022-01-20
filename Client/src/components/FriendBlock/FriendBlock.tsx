@@ -25,7 +25,7 @@ const FriendBlock = () => {
         <>
           <div className='friendBlock__lineBlock'>
             <hr className='friendBlock__line' />
-            <span className='friendBlock__lineText'>Ваши друзья</span>
+            <span className='friendBlock__lineText'>Your friends</span>
           </div>
           <ul className='friendBlock__friendList'>
             {friends.map((friend) => (
@@ -49,7 +49,7 @@ const FriendBlock = () => {
         <>
           <div className='friendBlock__lineBlock'>
             <hr className='friendBlock__line' />
-            <span className='friendBlock__lineText'>Возможно вы знакомы</span>
+            <span className='friendBlock__lineText'>People you may know</span>
           </div>
           <ul className='friendBlock__otherList'>
             {others.map((other) => (

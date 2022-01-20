@@ -44,7 +44,7 @@ const AddPostBlock = () => {
             as='textarea'
             name='text'
             className='addPostBlock__textarea'
-            placeholder='Введите текст'
+            placeholder='Input the text of the post'
           />
           <div className='addPostBlock__buttons'>
             <UploadButton
@@ -56,7 +56,7 @@ const AddPostBlock = () => {
               }
             />
             <button type='submit' className='addPostBlock__submitButton'>
-              Add
+              Add Post
             </button>
           </div>
         </Form>
