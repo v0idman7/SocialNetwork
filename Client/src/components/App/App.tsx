@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import ChatsMenu from '../ChatsMenu/ChatsMenu';
 import FriendPage from '../FriendPage/FriendPage';
 import LoginPage from '../LoginPage/LoginPage';
@@ -27,12 +28,7 @@ const App = () => {
   if (isAuthenticated) {
     return (
       <Routes>
-        <Route path='/' element={<MainNavigation auth={changeAuth} />}>
-          <Route index element={<NewsPage />} />
-          <Route path='chats' element={<ChatsMenu />} />
-          <Route path='friends' element={<FriendPage />} />
-          <Route path='profile' element={<ProfilePage />} />
-        </Route>
+        <Route path='*' element={<MainNavigation auth={changeAuth} />} />
       </Routes>
     );
   }

@@ -1,5 +1,5 @@
 .profileInfo {
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   display: flex;
@@ -86,28 +86,25 @@
   list-style: none;
 
   &__item {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 50px;
+    height: 50px;
   }
-}
 
-.friend {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  width: 50px;
-  height: 50px;
-
-  &__link {
+  &__itemLink {
     display: block;
     text-decoration: none;
     text-align: center;
   }
 
-  &__photo {
+  &__itemPhoto {
     width: 32px;
     border-radius: 16px;
   }
 
-  &__name {
+  &__itemName {
     display: block;
     font-size: 12px;
     color: black;

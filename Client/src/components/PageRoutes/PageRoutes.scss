@@ -1,0 +1,16 @@
+.fade-enter {
+  top: -100vh;
+}
+.fade-enter.fade-enter-active {
+  top: 0;
+
+  transition: all 500ms;
+}
+.fade-exit {
+  top: 0;
+}
+.fade-exit.fade-exit-active {
+  top: 100vh;
+
+  transition: all 500ms;
+}

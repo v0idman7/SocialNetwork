@@ -1,10 +1,27 @@
 .friendPage {
-  position: fixed;
+  position: absolute;
   top: 0;
-  left: 70px;
+  left: 0;
   width: calc(100vw - 70px);
   height: 100vh;
   padding: 20px 50px;
   box-sizing: border-box;
   background-color: rgba(255, 255, 255, 0.7);
+}
+
+.profileInfoCss-enter {
+  right: -300px;
+}
+.profileInfoCss-exit {
+  right: 0;
+}
+.profileInfoCss-enter-active {
+  right: 0;
+}
+.profileInfoCss-exit-active {
+  right: -300px;
+}
+.profileInfoCss-enter-active,
+.profileInfoCss-exit-active {
+  transition: right 350ms;
 }

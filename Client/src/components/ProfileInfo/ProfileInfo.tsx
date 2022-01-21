@@ -13,7 +13,7 @@ type UserType = {
   friends: string;
 };
 
-type ProfileType = {
+export type ProfileType = {
   user: UserType;
   friends: Array<UserType>;
   social: {
@@ -25,13 +25,8 @@ type ProfileType = {
   };
 };
 
-const ProfileInfo = () => {
-  const [profile, setProfile] = useState<ProfileType | null>(null);
-
-  useEffect(() => {
-    getProfileData().then((profileData) => setProfile(profileData));
-  }, []);
-  return (
+const ProfileInfo = ({ profile }: { profile: ProfileType | null }) =>
+  profile && (
     <div className='profileInfo'>
       <img
         className='profileInfo__photo'
@@ -85,10 +80,10 @@ const ProfileInfo = () => {
       )}
       <ul className='profileInfo__friends friendsList'>
         {profile?.friends.map((friend) => (
-          <li key={friend.id} className='friendsList__item friend'>
-            <a href='123' className='friend__link'>
+          <li key={friend.id} className='friendsList__item'>
+            <a href='123' className='friendsList__itemLink'>
               <img
-                className='friend__photo'
+                className='friendsList__itemPhoto'
                 alt='friend'
                 src={
                   friend.photo
@@ -96,13 +91,12 @@ const ProfileInfo = () => {
                     : camera
                 }
               />
-              <span className='friend__name'>{friend.firstName}</span>
+              <span className='friendsList__itemName'>{friend.firstName}</span>
             </a>
           </li>
         ))}
       </ul>
     </div>
   );
-};
 
 export default ProfileInfo;

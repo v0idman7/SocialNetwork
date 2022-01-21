@@ -10,7 +10,11 @@ type friendType = {
   photo: string;
 };
 
-const FriendBlock = () => {
+const FriendBlock = ({
+  friendClick,
+}: {
+  friendClick: (id: number) => void;
+}) => {
   const [friends, setFriends] = useState<Array<friendType> | null>(null);
   const [others, setOthers] = useState<Array<friendType> | null>(null);
 
@@ -29,7 +33,13 @@ const FriendBlock = () => {
           </div>
           <ul className='friendBlock__friendList'>
             {friends.map((friend) => (
-              <li key={friend.id} className='friendBlock__user'>
+              <li
+                key={friend.id}
+                className='friendBlock__user'
+                onClick={() => friendClick(friend.id)}
+                onKeyUp={() => friendClick(friend.id)}
+                role='menuitem'
+              >
                 <img
                   className='friendBlock__userPhoto'
                   src={
@@ -53,7 +63,13 @@ const FriendBlock = () => {
           </div>
           <ul className='friendBlock__otherList'>
             {others.map((other) => (
-              <li key={other.id} className='friendBlock__user'>
+              <li
+                key={other.id}
+                className='friendBlock__user'
+                onClick={() => friendClick(other.id)}
+                onKeyUp={() => friendClick(other.id)}
+                role='menuitem'
+              >
                 <img
                   className='friendBlock__userPhoto'
                   src={

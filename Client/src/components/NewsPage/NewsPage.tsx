@@ -23,7 +23,11 @@ const NewsPage = () => {
       .catch((e) => console.error(e));
   }, []);
 
-  return posts && <ProfilePostBlock posts={posts} news />;
+  return (
+    <div className='wrapCss'>
+      <ProfilePostBlock posts={posts} news />
+    </div>
+  );
 };
 
 export default NewsPage;

@@ -1,6 +1,9 @@
+import './ProfilePage.scss';
 import { useEffect, useState } from 'react';
+import { CSSTransition } from 'react-transition-group';
 import { getProfilePost } from '../../services/post';
-import ProfileInfo from '../ProfileInfo/ProfileInfo';
+import { getProfileData } from '../../services/profile';
+import ProfileInfo, { ProfileType } from '../ProfileInfo/ProfileInfo';
 import ProfilePostBlock from '../ProfilePostBlock/ProfilePostBlock';
 
 type PostType = {
@@ -16,6 +19,7 @@ type PostType = {
 
 const ProfilePage = () => {
   const [posts, setPosts] = useState<Array<PostType> | null>(null);
+  const [profile, setProfile] = useState<ProfileType | null>(null);
 
   useEffect(() => {
     getProfilePost()
@@ -23,11 +27,15 @@ const ProfilePage = () => {
       .catch((e) => console.error(e));
   }, []);
 
+  useEffect(() => {
+    getProfileData().then((profileData) => setProfile(profileData));
+  }, []);
+
   return (
-    <>
-      {posts && <ProfilePostBlock posts={posts} />}
-      <ProfileInfo />
-    </>
+    <div className='wrapCss'>
+      <ProfilePostBlock posts={posts} />
+      <ProfileInfo profile={profile} />
+    </div>
   );
 };
 

@@ -19,7 +19,7 @@ const ProfilePostBlock = ({
   posts,
   news,
 }: {
-  posts: Array<PostType>;
+  posts: Array<PostType> | null;
   news?: boolean;
 }) => (
   <div className={`profilePostBlock ${news ? 'newsPostBlock' : ''}`}>

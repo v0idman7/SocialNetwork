@@ -1,7 +1,7 @@
 .profilePostBlock {
-  position: fixed;
+  position: absolute;
   top: 0;
-  left: 70px;
+  left: 0;
   width: calc(100vw - 320px);
   height: 100vh;
   background-color: rgba(255, 255, 255, 0.7);
