@@ -1,89 +1,60 @@
+import { useEffect, useState } from 'react';
+import { SwitchTransition, CSSTransition } from 'react-transition-group';
+import { getChats } from '../../services/chat';
 import ChatsItem from '../ChatsItem/ChatsItem';
 import MessageBlock from '../MessageBlock/MessageBlock';
 import './ChatsMenu.scss';
 
-const ChatsMenu = () => (
-  <div className='wrapCss'>
-    <div className='chatsMenu'>
-      <input className='chatsMenu__search' />
-      <hr className='chatsMenu__line' />
-      <ul className='chatsMenu__list'>
-        <ChatsItem
-          newMessage={13}
-          name='Сергей Войткевич'
-          photo='https://sun9-85.userapi.com/impf/c638624/v638624222/498b7/6iq407TRpc0.jpg?size=1080x1080&quality=96&sign=b579a22952a4ca7fc471a3636b2d2ecc&type=album'
-        />
-        <ChatsItem
-          newMessage={1}
-          name='Сергей Войткевич'
-          photo='https://sun9-85.userapi.com/impf/c638624/v638624222/498b7/6iq407TRpc0.jpg?size=1080x1080&quality=96&sign=b579a22952a4ca7fc471a3636b2d2ecc&type=album'
-        />
-        <ChatsItem
-          name='Сергей Войткевич'
-          photo='https://sun9-85.userapi.com/impf/c638624/v638624222/498b7/6iq407TRpc0.jpg?size=1080x1080&quality=96&sign=b579a22952a4ca7fc471a3636b2d2ecc&type=album'
-        />
-        <ChatsItem
-          newMessage={123}
-          name='Сергей Войткевич'
-          photo='https://sun9-85.userapi.com/impf/c638624/v638624222/498b7/6iq407TRpc0.jpg?size=1080x1080&quality=96&sign=b579a22952a4ca7fc471a3636b2d2ecc&type=album'
-        />
-        <ChatsItem
-          name='Сергей Войткевич'
-          photo='https://sun9-85.userapi.com/impf/c638624/v638624222/498b7/6iq407TRpc0.jpg?size=1080x1080&quality=96&sign=b579a22952a4ca7fc471a3636b2d2ecc&type=album'
-        />
-        <ChatsItem
-          newMessage={13}
-          name='Сергей Войткевич'
-          photo='https://sun9-85.userapi.com/impf/c638624/v638624222/498b7/6iq407TRpc0.jpg?size=1080x1080&quality=96&sign=b579a22952a4ca7fc471a3636b2d2ecc&type=album'
-        />
-        <ChatsItem
-          newMessage={1}
-          name='Сергей Войткевич'
-          photo='https://sun9-85.userapi.com/impf/c638624/v638624222/498b7/6iq407TRpc0.jpg?size=1080x1080&quality=96&sign=b579a22952a4ca7fc471a3636b2d2ecc&type=album'
-        />
-        <ChatsItem
-          name='Сергей Войткевич'
-          photo='https://sun9-85.userapi.com/impf/c638624/v638624222/498b7/6iq407TRpc0.jpg?size=1080x1080&quality=96&sign=b579a22952a4ca7fc471a3636b2d2ecc&type=album'
-        />
-        <ChatsItem
-          newMessage={123}
-          name='Сергей Войткевич'
-          photo='https://sun9-85.userapi.com/impf/c638624/v638624222/498b7/6iq407TRpc0.jpg?size=1080x1080&quality=96&sign=b579a22952a4ca7fc471a3636b2d2ecc&type=album'
-        />
-        <ChatsItem
-          name='Сергей Войткевич'
-          photo='https://sun9-85.userapi.com/impf/c638624/v638624222/498b7/6iq407TRpc0.jpg?size=1080x1080&quality=96&sign=b579a22952a4ca7fc471a3636b2d2ecc&type=album'
-        />
-        <ChatsItem
-          newMessage={13}
-          name='Сергей Войткевич'
-          photo='https://sun9-85.userapi.com/impf/c638624/v638624222/498b7/6iq407TRpc0.jpg?size=1080x1080&quality=96&sign=b579a22952a4ca7fc471a3636b2d2ecc&type=album'
-        />
-        <ChatsItem
-          newMessage={1}
-          name='Сергей Войткевич'
-          photo='https://sun9-85.userapi.com/impf/c638624/v638624222/498b7/6iq407TRpc0.jpg?size=1080x1080&quality=96&sign=b579a22952a4ca7fc471a3636b2d2ecc&type=album'
-        />
-        <ChatsItem
-          name='Сергей Войткевич'
-          photo='https://sun9-85.userapi.com/impf/c638624/v638624222/498b7/6iq407TRpc0.jpg?size=1080x1080&quality=96&sign=b579a22952a4ca7fc471a3636b2d2ecc&type=album'
-        />
-        <ChatsItem
-          newMessage={123}
-          name='Сергей Войткевич'
-          photo='https://sun9-85.userapi.com/impf/c638624/v638624222/498b7/6iq407TRpc0.jpg?size=1080x1080&quality=96&sign=b579a22952a4ca7fc471a3636b2d2ecc&type=album'
-        />
-        <ChatsItem
-          name='Сергей Войткевич'
-          photo='https://sun9-85.userapi.com/impf/c638624/v638624222/498b7/6iq407TRpc0.jpg?size=1080x1080&quality=96&sign=b579a22952a4ca7fc471a3636b2d2ecc&type=album'
-        />
-      </ul>
+type UserType = {
+  firstName: string;
+  lastName: string;
+  photo: string;
+};
+
+type ChatType = {
+  id: number;
+  user_id: number;
+  user: UserType;
+};
+
+const ChatsMenu = () => {
+  const [chats, setChats] = useState<Array<ChatType> | null>(null);
+  const [currentChat, setCurrentChat] = useState<ChatType | null>(null);
+
+  useEffect(() => {
+    getChats().then((result) => setChats(result));
+  }, []);
+
+  return (
+    <div className='wrapCss'>
+      <div className='chatsMenu'>
+        <input className='chatsMenu__search' />
+        <hr className='chatsMenu__line' />
+        <ul className='chatsMenu__list'>
+          {chats &&
+            chats.map((chat) => (
+              <ChatsItem
+                key={chat.id}
+                name={`${chat.user.firstName} ${chat.user.lastName}`}
+                photo={chat.user.photo}
+                click={() => setCurrentChat(chat)}
+              />
+            ))}
+        </ul>
+      </div>
+      <SwitchTransition>
+        <CSSTransition
+          key={currentChat ? currentChat.id : 'null'}
+          addEndListener={(node, done) =>
+            node.addEventListener('transitionend', done, false)
+          }
+          classNames='chatMenuCss'
+        >
+          <MessageBlock chat={currentChat} />
+        </CSSTransition>
+      </SwitchTransition>
     </div>
-    <MessageBlock
-      name='Сергей Войткевич'
-      photo='https://sun9-85.userapi.com/impf/c638624/v638624222/498b7/6iq407TRpc0.jpg?size=1080x1080&quality=96&sign=b579a22952a4ca7fc471a3636b2d2ecc&type=album'
-    />
-  </div>
-);
+  );
+};
 
 export default ChatsMenu;

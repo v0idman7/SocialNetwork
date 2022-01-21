@@ -49,3 +49,20 @@
     }
   }
 }
+
+.chatMenuCss-enter {
+  opacity: 0;
+}
+.chatMenuCss-exit {
+  opacity: 1;
+}
+.chatMenuCss-enter-active {
+  opacity: 1;
+}
+.chatMenuCss-exit-active {
+  opacity: 0;
+}
+.chatMenuCss-enter-active,
+.chatMenuCss-exit-active {
+  transition: opacity 200ms;
+}
