@@ -14,7 +14,8 @@ type UserType = {
 type ChatType = {
   id: number;
   user_id: number;
-  user: UserType;
+  friend_id: number;
+  friend: UserType;
 };
 
 const ChatsMenu = () => {
@@ -35,8 +36,8 @@ const ChatsMenu = () => {
             chats.map((chat) => (
               <ChatsItem
                 key={chat.id}
-                name={`${chat.user.firstName} ${chat.user.lastName}`}
-                photo={chat.user.photo}
+                name={`${chat.friend.firstName} ${chat.friend.lastName}`}
+                photo={chat.friend.photo}
                 click={() => setCurrentChat(chat)}
               />
             ))}
@@ -50,7 +51,7 @@ const ChatsMenu = () => {
           }
           classNames='chatMenuCss'
         >
-          <MessageBlock chat={currentChat} />
+          <MessageBlock chatInfo={currentChat} />
         </CSSTransition>
       </SwitchTransition>
     </div>

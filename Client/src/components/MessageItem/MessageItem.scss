@@ -1,18 +1,27 @@
 .messageItem {
   width: 40%;
+  margin: 2px;
   padding: 10px;
-  border: 1px solid black;
+  border: 0;
   border-radius: 20px;
+  align-items: flex-end;
 
   &__text {
     margin: 0;
+  }
+
+  &:first-of-type {
+    margin-top: auto;
   }
 }
 
 .my {
   margin-right: auto;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .friend {
   margin-left: auto;
+  background-color: rgb(24, 129, 250, 0.8);
+  color: white;
 }

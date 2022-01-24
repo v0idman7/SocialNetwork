@@ -34,9 +34,9 @@ const FriendSearch = () => {
         value={input}
         onInput={(e) => setInput(e.currentTarget.value)}
       />
-      <ul className='friendSearch__list'>
-        {friends &&
-          friends.map((friend) => (
+      {friends && (
+        <ul className='friendSearch__list'>
+          {friends.map((friend) => (
             <li key={friend.id} className='friendSearch__user'>
               <img
                 className='friendSearch__userPhoto'
@@ -50,7 +50,8 @@ const FriendSearch = () => {
               <span className='friendSearch__userName'>{`${friend.firstName} ${friend.lastName}`}</span>
             </li>
           ))}
-      </ul>
+        </ul>
+      )}
     </div>
   );
 };
