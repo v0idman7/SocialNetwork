@@ -7,6 +7,9 @@ import router from './routes/main';
 import errorMiddleware from './middlewares/error.middleware';
 import { createServer } from 'http';
 import { Server, Socket } from 'socket.io';
+import { Message } from './database/models';
+import MessageService from './services/message.service';
+//import generateFake from './fake';
 
 const app: express.Application = express();
 
@@ -31,14 +34,23 @@ const io = new Server(httpServer, {
   },
 });
 
-// данная функция выполняется при подключении каждого сокета (обычно, один клиент = один сокет)
 io.on('connection', (socket) => {
+  const messageService = new MessageService();
   console.log('user connected', socket.id);
+
+  socket.on('create', (room) => socket.join(room));
+
+  socket.on('message', async ({ chatId, id, message }) => {
+    await messageService.addMessage(chatId, id, message);
+    io.to(chatId).emit('message', { chatId, id, message });
+  });
+
   socket.on('disconnect', () => {
-    console.log('A user disconnected');
+    console.log('user disconnected', socket.id);
   });
 });
 
 httpServer.listen(3000, async () => {
   await initDatabase();
+  //await generateFake(100);
 });

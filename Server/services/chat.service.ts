@@ -27,14 +27,16 @@ export default class ChatService {
       if (chat.firstUser_id === userId && chat.secondUser_id !== userId) {
         return {
           id: chat.id,
-          user_id: chat.secondUser_id,
-          user: chat.secondUser,
+          user_id: chat.firstUser_id,
+          friend_id: chat.secondUser_id,
+          friend: chat.secondUser,
         };
       }
       return {
         id: chat.id,
-        user_id: chat.firstUser_id,
-        user: chat.firstUser,
+        user_id: chat.secondUser_id,
+        friend_id: chat.firstUser_id,
+        friend: chat.firstUser,
       };
     });
     return result;

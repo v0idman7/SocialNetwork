@@ -43,7 +43,7 @@ export const User = sequelize.define<UserInstance>(
       allowNull: false,
     },
     friends: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
       defaultValue: '',
     },

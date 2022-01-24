@@ -7,6 +7,7 @@ import likePostRouter from './likePost';
 import profileRouter from './profile';
 import uploadRouter from './upload';
 import chatRouter from './chat';
+import messageRouter from './message';
 
 const router = Router();
 
@@ -18,5 +19,6 @@ router.use('/api/comment', commentRouter);
 router.use('/api/likepost', likePostRouter);
 router.use('/api/upload', uploadRouter);
 router.use('/api/chat', chatRouter);
+router.use('/api/message', messageRouter);
 
 export default router;
