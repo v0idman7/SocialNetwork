@@ -19,6 +19,19 @@
     margin: 20px;
   }
 
+  &__subscribe {
+    width: 150px;
+    height: 22px;
+    margin: 0 auto;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 11px;
+    border: 0;
+    background-color: #1bbc9b;
+    color: white;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.6);
+  }
+
   &__links {
     display: flex;
     padding: 0 10px;

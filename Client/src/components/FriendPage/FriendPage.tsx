@@ -26,7 +26,7 @@ const FriendPage = () => {
           }
           classNames='profileInfoCss'
         >
-          <ProfileInfo profile={profile} />
+          <ProfileInfo profile={profile} friend />
         </CSSTransition>
       </SwitchTransition>
     </div>
