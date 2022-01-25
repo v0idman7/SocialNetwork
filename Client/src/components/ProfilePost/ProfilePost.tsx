@@ -29,15 +29,17 @@ const ProfilePost: React.FC<ProfilePostType> = ({ text, photo, user }) => {
   return (
     <li className='profilePost'>
       <div className='profilePost__user'>
-        <img
-          className='profilePost__userPhoto'
-          src={
-            user.userPhoto
-              ? `http://localhost:3000/images/${user.userPhoto}`
-              : camera
-          }
-          alt='post owner'
-        />
+        <div className='profilePost__userPhotoWrap'>
+          <img
+            className='profilePost__userPhoto'
+            src={
+              user.userPhoto
+                ? `http://localhost:3000/images/${user.userPhoto}`
+                : camera
+            }
+            alt='post owner'
+          />
+        </div>
         <span className='profilePost__userName'>{user.userName}</span>
       </div>
       {text && <p className='profilePost__text'>{text}</p>}

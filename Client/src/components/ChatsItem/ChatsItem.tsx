@@ -5,6 +5,7 @@ type ChatsItemType = {
   photo: string;
   name: string;
   newMessage?: number;
+  plus?: boolean;
   click: () => void;
 };
 
@@ -12,6 +13,7 @@ const ChatsItem: React.FC<ChatsItemType> = ({
   photo,
   name,
   newMessage,
+  plus,
   click,
 }) => (
   <li className='chatsItem' onClick={click} onKeyDown={click} role='menuitem'>
@@ -19,7 +21,11 @@ const ChatsItem: React.FC<ChatsItemType> = ({
       <div className='chatsItem__photoWrap'>
         <img
           className='chatsItem__photoWrap__photo'
-          src={photo ? `http://localhost:3000/images/${photo}` : camera}
+          src={
+            (plus && photo) ||
+            (photo && `http://localhost:3000/images/${photo}`) ||
+            camera
+          }
           alt='friend'
         />
         {newMessage && (

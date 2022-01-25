@@ -15,7 +15,7 @@ const FriendPage = () => {
   return (
     <div className='wrapCss'>
       <div className='friendPage'>
-        <FriendSearch />
+        <FriendSearch friendClick={handleClick} />
         <FriendBlock friendClick={handleClick} />
       </div>
       <SwitchTransition>

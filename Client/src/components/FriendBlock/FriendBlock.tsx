@@ -40,15 +40,17 @@ const FriendBlock = ({
                 onKeyUp={() => friendClick(friend.id)}
                 role='menuitem'
               >
-                <img
-                  className='friendBlock__userPhoto'
-                  src={
-                    friend.photo
-                      ? `http://localhost:3000/images/${friend.photo}`
-                      : camera
-                  }
-                  alt='friend'
-                />
+                <div className='friendBlock__userPhotoWrap'>
+                  <img
+                    className='friendBlock__userPhoto'
+                    src={
+                      friend.photo
+                        ? `http://localhost:3000/images/${friend.photo}`
+                        : camera
+                    }
+                    alt='friend'
+                  />
+                </div>
                 <span className='friendBlock__userName'>{`${friend.firstName} ${friend.lastName}`}</span>
               </li>
             ))}
@@ -70,15 +72,17 @@ const FriendBlock = ({
                 onKeyUp={() => friendClick(other.id)}
                 role='menuitem'
               >
-                <img
-                  className='friendBlock__userPhoto'
-                  src={
-                    other.photo
-                      ? `http://localhost:3000/images/${other.photo}`
-                      : camera
-                  }
-                  alt='friend'
-                />
+                <div className='friendBlock__userPhotoWrap'>
+                  <img
+                    className='friendBlock__userPhoto'
+                    src={
+                      other.photo
+                        ? `http://localhost:3000/images/${other.photo}`
+                        : camera
+                    }
+                    alt='friend'
+                  />
+                </div>
                 <span className='friendBlock__userName'>{`${other.firstName} ${other.lastName}`}</span>
               </li>
             ))}

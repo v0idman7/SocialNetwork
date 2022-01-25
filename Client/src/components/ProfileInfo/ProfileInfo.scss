@@ -8,7 +8,18 @@
   flex-direction: column;
   background-color: rgba(255, 255, 255, 0.8);
 
+  &__photoWrap {
+    position: relative;
+    height: 250px;
+    width: 100%;
+    overflow: hidden;
+  }
+
   &__photo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     height: 250px;
   }
 

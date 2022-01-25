@@ -56,15 +56,17 @@ const ProfileInfo = ({
   return (
     profile && (
       <div className='profileInfo'>
-        <img
-          className='profileInfo__photo'
-          alt='profile'
-          src={
-            profile?.user.photo
-              ? `http://localhost:3000/images/${profile?.user.photo}`
-              : camera
-          }
-        />
+        <div className='profileInfo__photoWrap'>
+          <img
+            className='profileInfo__photo'
+            alt='profile'
+            src={
+              profile?.user.photo
+                ? `http://localhost:3000/images/${profile?.user.photo}`
+                : camera
+            }
+          />
+        </div>
         <span className='profileInfo__name'>
           {`${profile?.user.firstName} ${profile?.user.lastName}`}
         </span>

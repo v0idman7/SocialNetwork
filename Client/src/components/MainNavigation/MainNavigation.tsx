@@ -1,10 +1,6 @@
-import { Link, Outlet, Route, Routes, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { userLogout } from '../../services/auth';
-import ChatsMenu from '../ChatsMenu/ChatsMenu';
-import FriendPage from '../FriendPage/FriendPage';
-import NewsPage from '../NewsPage/NewsPage';
 import PageRoutes from '../PageRoutes/PageRoutes';
-import ProfilePage from '../ProfilePage/ProfilePage';
 import './MainNavigation.scss';
 
 type MainNavigationType = {

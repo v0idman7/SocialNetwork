@@ -1,6 +1,5 @@
 import './ProfilePage.scss';
 import { useEffect, useState } from 'react';
-import { CSSTransition } from 'react-transition-group';
 import { getProfilePost } from '../../services/post';
 import { getProfileData } from '../../services/profile';
 import ProfileInfo, { ProfileType } from '../ProfileInfo/ProfileInfo';

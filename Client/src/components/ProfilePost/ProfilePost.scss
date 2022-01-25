@@ -24,9 +24,20 @@
     margin-bottom: 15px;
   }
 
-  &__userPhoto {
+  &__userPhotoWrap {
+    position: relative;
+    height: 50px;
     width: 50px;
     border-radius: 25px;
+    overflow: hidden;
+  }
+
+  &__userPhoto {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 50px;
   }
 
   &__userName {

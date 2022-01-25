@@ -1,5 +1,3 @@
-import { useCallback, useEffect, useState } from 'react';
-import { getProfilePost } from '../../services/post';
 import AddPostBlock from '../AddPostBlock/AddPostBlock';
 import ProfilePost from '../ProfilePost/ProfilePost';
 import './ProfilePostBlock.scss';

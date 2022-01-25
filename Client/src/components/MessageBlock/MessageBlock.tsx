@@ -5,6 +5,7 @@ import MessageItem from '../MessageItem/MessageItem';
 import './MessageBlock.scss';
 import camera from '../../images/camera.jpg';
 import { getMessages } from '../../services/message';
+import { deleteChat } from '../../services/chat';
 
 type UserType = {
   firstName: string;
@@ -21,7 +22,13 @@ type ChatType = {
 
 const socket = io('http://localhost:3000');
 
-const MessageBlock = ({ chatInfo }: { chatInfo: ChatType | null }) => {
+const MessageBlock = ({
+  chatInfo,
+  deleteClick,
+}: {
+  chatInfo: ChatType | null;
+  deleteClick: (id: number) => void;
+}) => {
   const [chatMessage, setChatMessage] = useState('');
   const [chat, setChat] = useState<
     Array<{
@@ -85,16 +92,25 @@ const MessageBlock = ({ chatInfo }: { chatInfo: ChatType | null }) => {
     chatInfo && (
       <div className='messageBlock'>
         <div className='messageBlock__header'>
-          <img
-            className='messageBlock__header__photo'
-            src={
-              chatInfo.friend.photo
-                ? `http://localhost:3000/images/${chatInfo.friend.photo}`
-                : camera
-            }
-            alt='friend'
-          />
+          <div className='messageBlock__header__photoWrap'>
+            <img
+              className='messageBlock__header__photo'
+              src={
+                chatInfo.friend.photo
+                  ? `http://localhost:3000/images/${chatInfo.friend.photo}`
+                  : camera
+              }
+              alt='friend'
+            />
+          </div>
           <span className='messageBlock__header__name'>{`${chatInfo.friend.firstName} ${chatInfo.friend.lastName}`}</span>
+          <button
+            className='messageBlock__header__delete'
+            type='button'
+            onClick={() => deleteClick(chatInfo.id)}
+          >
+            1
+          </button>
         </div>
         <hr className='messageBlock__line' />
         <ul className='messageBlock__chat' onScroll={scrollHandler}>

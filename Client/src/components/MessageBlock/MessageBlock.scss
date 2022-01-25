@@ -10,10 +10,20 @@
     display: flex;
     margin: 10px 50px;
 
-    &__photo {
+    &__photoWrap {
+      position: relative;
       width: 70px;
       height: 70px;
       border-radius: 20%;
+      overflow: hidden;
+    }
+
+    &__photo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      height: 70px;
     }
 
     &__name {
@@ -21,6 +31,16 @@
       font-size: 32px;
       font-weight: 700;
       line-height: 70px;
+    }
+
+    &__delete {
+      width: 70px;
+      height: 70px;
+      margin-left: auto;
+      background: url('../../images/delete.png') center no-repeat;
+      color: transparent;
+      border: 0;
+      cursor: pointer;
     }
   }
 

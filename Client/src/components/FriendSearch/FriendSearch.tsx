@@ -11,7 +11,11 @@ type friendType = {
   photo: string;
 };
 
-const FriendSearch = () => {
+const FriendSearch = ({
+  friendClick,
+}: {
+  friendClick: (id: number) => void;
+}) => {
   const [input, setInput] = useState('');
   const [friends, setFriends] = useState<Array<friendType> | null>(null);
 
@@ -37,16 +41,24 @@ const FriendSearch = () => {
       {friends && (
         <ul className='friendSearch__list'>
           {friends.map((friend) => (
-            <li key={friend.id} className='friendSearch__user'>
-              <img
-                className='friendSearch__userPhoto'
-                src={
-                  friend.photo
-                    ? `http://localhost:3000/images/${friend.photo}`
-                    : camera
-                }
-                alt='friend'
-              />
+            <li
+              key={friend.id}
+              className='friendSearch__user'
+              onClick={() => friendClick(friend.id)}
+              onKeyUp={() => friendClick(friend.id)}
+              role='menuitem'
+            >
+              <div className='friendSearch__userPhotoWrap'>
+                <img
+                  className='friendSearch__userPhoto'
+                  src={
+                    friend.photo
+                      ? `http://localhost:3000/images/${friend.photo}`
+                      : camera
+                  }
+                  alt='friend'
+                />
+              </div>
               <span className='friendSearch__userName'>{`${friend.firstName} ${friend.lastName}`}</span>
             </li>
           ))}

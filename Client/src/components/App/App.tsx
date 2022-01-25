@@ -1,12 +1,7 @@
 import { useState } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import ChatsMenu from '../ChatsMenu/ChatsMenu';
-import FriendPage from '../FriendPage/FriendPage';
+import { Route, Routes } from 'react-router-dom';
 import LoginPage from '../LoginPage/LoginPage';
 import MainNavigation from '../MainNavigation/MainNavigation';
-import NewsPage from '../NewsPage/NewsPage';
-import ProfilePage from '../ProfilePage/ProfilePage';
 import RegistrationPage from '../RegistrationPage/RegistrationPage';
 import './App.scss';
 

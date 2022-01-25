@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { SwitchTransition, CSSTransition } from 'react-transition-group';
-import { getChats } from '../../services/chat';
+import { addChat, deleteChat, getChats } from '../../services/chat';
 import ChatsItem from '../ChatsItem/ChatsItem';
+import FriendBlock from '../FriendBlock/FriendBlock';
 import MessageBlock from '../MessageBlock/MessageBlock';
 import './ChatsMenu.scss';
+import plus from '../../images/plus.png';
+import FriendSearch from '../FriendSearch/FriendSearch';
 
 type UserType = {
   firstName: string;
@@ -21,28 +24,70 @@ type ChatType = {
 const ChatsMenu = () => {
   const [chats, setChats] = useState<Array<ChatType> | null>(null);
   const [currentChat, setCurrentChat] = useState<ChatType | null>(null);
+  const [search, setSearch] = useState('');
+  const [isAdd, setIsAdd] = useState(false);
 
   useEffect(() => {
-    getChats().then((result) => setChats(result));
-  }, []);
+    if (!isAdd) getChats().then((result) => setChats(result));
+  }, [isAdd]);
+
+  const addChatClick = () => {
+    setIsAdd(true);
+    setCurrentChat(null);
+  };
+
+  const friendClick = (id: number) => {
+    addChat(id).then((result) => {
+      setCurrentChat(result);
+      setIsAdd(false);
+    });
+  };
+
+  const deleteChatClick = (id: number) => {
+    deleteChat(id).then(() => setCurrentChat(null));
+  };
 
   return (
     <div className='wrapCss'>
-      <div className='chatsMenu'>
-        <input className='chatsMenu__search' />
-        <hr className='chatsMenu__line' />
-        <ul className='chatsMenu__list'>
-          {chats &&
-            chats.map((chat) => (
-              <ChatsItem
-                key={chat.id}
-                name={`${chat.friend.firstName} ${chat.friend.lastName}`}
-                photo={chat.friend.photo}
-                click={() => setCurrentChat(chat)}
-              />
-            ))}
-        </ul>
-      </div>
+      {isAdd ? (
+        <div className='addChatMenu'>
+          <FriendSearch friendClick={friendClick} />
+          <FriendBlock friendClick={friendClick} />
+        </div>
+      ) : (
+        <div className='chatsMenu'>
+          <input
+            className='chatsMenu__search'
+            value={search}
+            onInput={(e) => setSearch(e.currentTarget.value)}
+          />
+          <hr className='chatsMenu__line' />
+          <ul className='chatsMenu__list'>
+            <ChatsItem
+              key='add'
+              name='Add new chat'
+              photo={plus}
+              plus
+              click={addChatClick}
+            />
+            {chats &&
+              chats
+                .filter((chat) =>
+                  `${chat.friend.firstName} ${chat.friend.lastName}`
+                    .toLowerCase()
+                    .includes(search.toLowerCase())
+                )
+                .map((chat) => (
+                  <ChatsItem
+                    key={chat.id}
+                    name={`${chat.friend.firstName} ${chat.friend.lastName}`}
+                    photo={chat.friend.photo}
+                    click={() => setCurrentChat(chat)}
+                  />
+                ))}
+          </ul>
+        </div>
+      )}
       <SwitchTransition>
         <CSSTransition
           key={currentChat ? currentChat.id : 'null'}
@@ -51,7 +96,7 @@ const ChatsMenu = () => {
           }
           classNames='chatMenuCss'
         >
-          <MessageBlock chatInfo={currentChat} />
+          <MessageBlock chatInfo={currentChat} deleteClick={deleteChatClick} />
         </CSSTransition>
       </SwitchTransition>
     </div>
