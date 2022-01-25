@@ -29,6 +29,24 @@ export default class FriendService {
     return result;
   }
 
+  async checkFriend(userID: number, friendID: number) {
+    const user = await User.findOne({
+      where: { id: userID },
+    });
+    if (!user) {
+      throw ApiError.BadRequest('Такого пользователя не существует');
+    }
+
+    const userFriends = user.friends === '' ? [] : user.friends.split(' ');
+    if (userFriends === []) {
+      throw ApiError.BadRequest('У этого пользователя нет друзей');
+    }
+
+    const result = userFriends.includes(friendID.toString());
+
+    return result;
+  }
+
   async getOther(userID: number) {
     const user = await User.findOne({
       where: { id: userID },

@@ -6,8 +6,7 @@ import initDatabase from './database/initDatabase';
 import router from './routes/main';
 import errorMiddleware from './middlewares/error.middleware';
 import { createServer } from 'http';
-import { Server, Socket } from 'socket.io';
-import { Message } from './database/models';
+import { Server } from 'socket.io';
 import MessageService from './services/message.service';
 //import generateFake from './fake';
 

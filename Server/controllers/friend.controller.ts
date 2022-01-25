@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, query } from 'express';
 import ApiError from '../exceptions/api.error';
 import { AuthRequest } from '../middlewares/auth.middleware';
 import FriendService from '../services/friend.service';
@@ -24,6 +24,24 @@ export default class FriendController {
     return null;
   }
 
+  async checkFriend(req: AuthRequest, res: Response, next: NextFunction) {
+    try {
+      let userID = 0;
+      if (typeof req.user !== 'string') {
+        userID = req.user?.id;
+      }
+      const { id } = req.query;
+      if (!id) {
+        throw ApiError.BadRequest('Запрос с неверными параметрами или без них');
+      }
+      const isFriend = await this.service.checkFriend(+userID, +id);
+      return res.json(isFriend);
+    } catch (e) {
+      next(e);
+    }
+    return null;
+  }
+
   async getOther(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       let userID = 0;
@@ -38,10 +56,17 @@ export default class FriendController {
     return null;
   }
 
-  async add(req: Request, res: Response, next: NextFunction) {
+  async add(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-      const { userID, friendID } = req.body;
-      const userData = await this.service.add(userID, friendID);
+      let userID = 0;
+      if (typeof req.user !== 'string') {
+        userID = req.user?.id;
+      }
+      const { id } = req.query;
+      if (!id) {
+        throw ApiError.BadRequest('Запрос с неверными параметрами или без них');
+      }
+      const userData = await this.service.add(userID, +id);
       return res.json(userData);
     } catch (e) {
       next(e);
@@ -49,10 +74,17 @@ export default class FriendController {
     return null;
   }
 
-  async delete(req: Request, res: Response, next: NextFunction) {
+  async delete(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-      const { userID, friendID } = req.body;
-      const userData = await this.service.delete(userID, friendID);
+      let userID = 0;
+      if (typeof req.user !== 'string') {
+        userID = req.user?.id;
+      }
+      const { id } = req.query;
+      if (!id) {
+        throw ApiError.BadRequest('Запрос с неверными параметрами или без них');
+      }
+      const userData = await this.service.delete(userID, +id);
       return res.json(userData);
     } catch (e) {
       next(e);
