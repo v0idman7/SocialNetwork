@@ -1,5 +1,6 @@
 import { Op } from 'sequelize';
-import { Chat, ChatInstance } from '../database/models/Chat';
+import { Message } from '../database/models';
+import { Chat } from '../database/models/Chat';
 import { User } from '../database/models/User';
 import ApiError from '../exceptions/api.error';
 
@@ -47,7 +48,19 @@ export default class ChatService {
     if (!friend) {
       throw ApiError.BadRequest('Такого пользователя не существует');
     }
-    const chat = await Chat.findOne({
+    let chat = await Chat.findOne({
+      include: [
+        {
+          as: 'firstUser',
+          model: User,
+          attributes: ['firstName', 'lastName', 'photo'],
+        },
+        {
+          as: 'secondUser',
+          model: User,
+          attributes: ['firstName', 'lastName', 'photo'],
+        },
+      ],
       where: {
         [Op.or]: [
           { firstUser_id: userId, secondUser_id: friendId },
@@ -55,14 +68,44 @@ export default class ChatService {
         ],
       },
     });
-    if (chat) {
-      throw ApiError.BadRequest('Чат с этип пользователеи уже существует');
+    if (!chat) {
+      const newChat = await Chat.create({
+        firstUser_id: userId,
+        secondUser_id: friendId,
+      });
+      chat = await Chat.findOne({
+        include: [
+          {
+            as: 'firstUser',
+            model: User,
+            attributes: ['firstName', 'lastName', 'photo'],
+          },
+          {
+            as: 'secondUser',
+            model: User,
+            attributes: ['firstName', 'lastName', 'photo'],
+          },
+        ],
+        where: {
+          id: newChat.id,
+        },
+      });
     }
-    const newChat = await Chat.create({
-      firstUser_id: userId,
-      secondUser_id: friendId,
-    });
-    return newChat.id;
+    if (!chat) throw ApiError.BadRequest('Непредвиденная ошибка');
+    if (chat.firstUser_id === userId && chat.secondUser_id !== userId) {
+      return {
+        id: chat.id,
+        user_id: chat.firstUser_id,
+        friend_id: chat.secondUser_id,
+        friend: chat.secondUser,
+      };
+    }
+    return {
+      id: chat.id,
+      user_id: chat.secondUser_id,
+      friend_id: chat.firstUser_id,
+      friend: chat.firstUser,
+    };
   }
 
   async deleteChat(userId: number, chatId: number) {
@@ -73,6 +116,9 @@ export default class ChatService {
     if (chat.firstUser_id !== +userId && chat.secondUser_id !== +userId) {
       throw ApiError.BadRequest('Вы не можете удалить этот чат');
     }
+    const destroyMessage = await Message.destroy({
+      where: { chat_id: chatId },
+    });
     const destroyChat = await Chat.destroy({
       where: { id: chatId },
     });
