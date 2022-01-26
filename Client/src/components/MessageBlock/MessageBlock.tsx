@@ -5,7 +5,6 @@ import MessageItem from '../MessageItem/MessageItem';
 import './MessageBlock.scss';
 import camera from '../../images/camera.jpg';
 import { getMessages } from '../../services/message';
-import { deleteChat } from '../../services/chat';
 
 type UserType = {
   firstName: string;

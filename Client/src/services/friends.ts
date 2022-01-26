@@ -1,4 +1,4 @@
-import { getAuthorization } from './auth';
+import { getAuthorization, refreshToken } from './auth';
 
 export const getSearch = (search: string) =>
   fetch(`http://localhost:3000/api/friend/all?search=${search}`, {
@@ -10,6 +10,9 @@ export const getSearch = (search: string) =>
   })
     .then(async (res) => {
       if (res.status !== 200) {
+        if (res.status === 401) {
+          refreshToken().then(() => getSearch(search));
+        }
         const responce = await res.json();
         throw new Error(responce.message);
       }
@@ -28,6 +31,9 @@ export const getFriends = () =>
   })
     .then(async (res) => {
       if (res.status !== 200) {
+        if (res.status === 401) {
+          refreshToken().then(() => getFriends());
+        }
         const responce = await res.json();
         throw new Error(responce.message);
       }
@@ -46,6 +52,9 @@ export const getOther = () =>
   })
     .then(async (res) => {
       if (res.status !== 200) {
+        if (res.status === 401) {
+          refreshToken().then(() => getOther());
+        }
         const responce = await res.json();
         throw new Error(responce.message);
       }
@@ -64,6 +73,9 @@ export const checkFriend = (id: number) =>
   })
     .then(async (res) => {
       if (res.status !== 200) {
+        if (res.status === 401) {
+          refreshToken().then(() => checkFriend(id));
+        }
         const responce = await res.json();
         throw new Error(responce.message);
       }
@@ -82,6 +94,9 @@ export const addFriend = (id: number) =>
   })
     .then(async (res) => {
       if (res.status !== 200) {
+        if (res.status === 401) {
+          refreshToken().then(() => addFriend(id));
+        }
         const responce = await res.json();
         throw new Error(responce.message);
       }
@@ -100,6 +115,9 @@ export const deleteFriend = (id: number) =>
   })
     .then(async (res) => {
       if (res.status !== 200) {
+        if (res.status === 401) {
+          refreshToken().then(() => deleteFriend(id));
+        }
         const responce = await res.json();
         throw new Error(responce.message);
       }

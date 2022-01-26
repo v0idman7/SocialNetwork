@@ -8,6 +8,7 @@ type PostType = {
   text: string;
   photo: string;
   User: {
+    id: number;
     firstName: string;
     lastName: string;
     photo: string;

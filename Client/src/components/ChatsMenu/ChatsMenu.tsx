@@ -44,7 +44,15 @@ const ChatsMenu = () => {
   };
 
   const deleteChatClick = (id: number) => {
-    deleteChat(id).then(() => setCurrentChat(null));
+    if (chats && currentChat) {
+      deleteChat(id)
+        .then(() =>
+          setChats((prevChats) =>
+            prevChats!.filter((chat) => chat.id !== currentChat.id)
+          )
+        )
+        .then(() => setCurrentChat(null));
+    }
   };
 
   return (

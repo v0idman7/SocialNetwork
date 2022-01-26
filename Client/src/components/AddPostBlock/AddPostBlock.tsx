@@ -10,13 +10,13 @@ type PostValues = {
   files: FileList | null;
 };
 
-const AddPostBlock = () => {
+const AddPostBlock = ({ hidden }: { hidden: boolean }) => {
   const [countFiles, setCountFiles] = useState(0);
   const initialValues: PostValues = {
     text: '',
     files: null,
   };
-  return (
+  return hidden ? null : (
     <Formik
       initialValues={initialValues}
       validateOnBlur

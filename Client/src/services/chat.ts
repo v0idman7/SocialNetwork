@@ -1,4 +1,4 @@
-import { getAuthorization } from './auth';
+import { getAuthorization, refreshToken } from './auth';
 
 export const getChats = () =>
   fetch(`http://localhost:3000/api/chat/`, {
@@ -10,6 +10,9 @@ export const getChats = () =>
   })
     .then(async (res) => {
       if (res.status !== 200) {
+        if (res.status === 401) {
+          refreshToken().then(() => getChats());
+        }
         const responce = await res.json();
         throw new Error(responce.message);
       }
@@ -28,6 +31,9 @@ export const getChatId = (id: number) =>
   })
     .then(async (res) => {
       if (res.status !== 200) {
+        if (res.status === 401) {
+          refreshToken().then(() => getChatId(id));
+        }
         const responce = await res.json();
         throw new Error(responce.message);
       }
@@ -46,6 +52,9 @@ export const addChat = (id: number) =>
   })
     .then(async (res) => {
       if (res.status !== 200) {
+        if (res.status === 401) {
+          refreshToken().then(() => addChat(id));
+        }
         const responce = await res.json();
         throw new Error(responce.message);
       }
@@ -64,6 +73,9 @@ export const deleteChat = (id: number) =>
   })
     .then(async (res) => {
       if (res.status !== 200) {
+        if (res.status === 401) {
+          refreshToken().then(() => deleteChat(id));
+        }
         const responce = await res.json();
         throw new Error(responce.message);
       }

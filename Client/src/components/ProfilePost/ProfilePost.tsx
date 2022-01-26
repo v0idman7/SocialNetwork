@@ -7,13 +7,19 @@ type ProfilePostType = {
   text?: string;
   photo?: string;
   user: { userPhoto: string; userName: string };
+  deleteClick?: (() => void) | false;
 };
 
 type imageType = {
   original: string;
 };
 
-const ProfilePost: React.FC<ProfilePostType> = ({ text, photo, user }) => {
+const ProfilePost: React.FC<ProfilePostType> = ({
+  text,
+  photo,
+  user,
+  deleteClick,
+}) => {
   const [images, setImages] = useState<Array<imageType>>([]);
   useEffect(() => {
     if (photo) {
@@ -41,6 +47,20 @@ const ProfilePost: React.FC<ProfilePostType> = ({ text, photo, user }) => {
           />
         </div>
         <span className='profilePost__userName'>{user.userName}</span>
+        {deleteClick && (
+          <button className='profilePost__update' type='button'>
+            1
+          </button>
+        )}
+        {deleteClick && (
+          <button
+            className='profilePost__delete'
+            type='button'
+            onClick={deleteClick}
+          >
+            1
+          </button>
+        )}
       </div>
       {text && <p className='profilePost__text'>{text}</p>}
       {photo && (
