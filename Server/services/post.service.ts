@@ -1,7 +1,11 @@
+import fs from 'fs';
+import path from 'path';
 import { Op } from 'sequelize';
 import { Post } from '../database/models/Post';
 import { User } from '../database/models/User';
 import ApiError from '../exceptions/api.error';
+
+const pathImages = path.resolve(__dirname, '../images');
 
 export default class PostService {
   async getUserPost(userID: number) {
@@ -14,7 +18,7 @@ export default class PostService {
       include: [
         {
           model: User,
-          attributes: ['firstName', 'lastName', 'photo'],
+          attributes: ['id', 'firstName', 'lastName', 'photo'],
         },
       ],
       where: { user_id: userID },
@@ -39,7 +43,7 @@ export default class PostService {
       include: [
         {
           model: User,
-          attributes: ['firstName', 'lastName', 'photo'],
+          attributes: ['id', 'firstName', 'lastName', 'photo'],
         },
       ],
       where: {
@@ -68,7 +72,7 @@ export default class PostService {
       include: [
         {
           model: User,
-          attributes: ['firstName', 'lastName', 'photo'],
+          attributes: ['id', 'firstName', 'lastName', 'photo'],
         },
       ],
       where: { user_id: { [Op.in]: userFriends } },
@@ -116,7 +120,14 @@ export default class PostService {
     if (post.user_id !== userID) {
       throw ApiError.BadRequest('Вы не можете удалить чужой пост');
     }
-    const deletedPost = await Post.destroy({ where: { id: postID } });
+    const imgArr = post.photo.split(' ');
+    const deletedPost = await Post.destroy({ where: { id: postID } }).then(() =>
+      imgArr.forEach((img) =>
+        fs.unlink(`${pathImages}/${img}`, (err) => {
+          if (err) throw err;
+        })
+      )
+    );
     return deletedPost;
   }
 }

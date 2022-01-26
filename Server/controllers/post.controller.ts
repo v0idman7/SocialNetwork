@@ -70,8 +70,11 @@ export default class PostController {
       if (typeof req.user !== 'string') {
         userID = req.user?.id;
       }
-      const { postID } = req.body;
-      const postData = await this.service.delete(userID, postID);
+      const { id } = req.query;
+      if (!id) {
+        throw ApiError.BadRequest('Запрос с неверными параметрами или без них');
+      }
+      const postData = await this.service.delete(userID, +id);
       return res.json(postData);
     } catch (e) {
       next(e);

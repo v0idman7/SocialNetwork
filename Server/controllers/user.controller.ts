@@ -75,11 +75,12 @@ export default class UserController {
 
   async getUserData(req: AuthRequest, res: Response, next: NextFunction) {
     try {
+      let userID = 0;
       if (typeof req.user !== 'string') {
-        const userData = await this.service.getUserData(req.user?.id);
-        return res.json(userData);
+        userID = req.user?.id;
       }
-      throw ApiError.UnauthorizedError();
+      const userData = await this.service.getUserData(userID);
+      return res.json(userData);
     } catch (e) {
       next(e);
     }
