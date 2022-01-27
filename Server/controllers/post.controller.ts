@@ -16,14 +16,17 @@ export default class PostController {
       if (typeof req.user !== 'string') {
         userID = req.user?.id;
       }
-      const { user, friend } = req.query;
+      const { page, user, friend } = req.query;
       let postData = [];
+      if (!page) {
+        throw ApiError.BadRequest('Запрос с неверными параметрами или без них');
+      }
       if (user && !friend) {
-        postData = await this.service.getUserPost(userID);
+        postData = await this.service.getUserPost(userID, +page);
       } else if (!user && friend) {
-        postData = await this.service.getFriendsPost(userID);
+        postData = await this.service.getFriendsPost(userID, +page);
       } else if (user && friend) {
-        postData = await this.service.getUserAndFriendsPost(userID);
+        postData = await this.service.getUserAndFriendsPost(userID, +page);
       } else {
         throw ApiError.BadRequest('Запрос с неверными параметрами или без них');
       }

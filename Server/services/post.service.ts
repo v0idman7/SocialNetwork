@@ -8,13 +8,15 @@ import ApiError from '../exceptions/api.error';
 const pathImages = path.resolve(__dirname, '../images');
 
 export default class PostService {
-  async getUserPost(userID: number) {
+  async getUserPost(userID: number, page: number) {
     const user = await User.findOne({ where: { id: userID } });
     if (!user) {
       throw ApiError.BadRequest('Такого пользователя не существует');
     }
 
     const result = await Post.findAll({
+      offset: (page - 1) * 10,
+      limit: 10,
       include: [
         {
           model: User,
@@ -28,8 +30,10 @@ export default class PostService {
     return result;
   }
 
-  async getUserAndFriendsPost(userID: number) {
-    const user = await User.findOne({ where: { id: userID } });
+  async getUserAndFriendsPost(userID: number, page: number) {
+    const user = await User.findOne({
+      where: { id: userID },
+    });
     if (!user) {
       throw ApiError.BadRequest('Такого пользователя не существует');
     }
@@ -40,6 +44,8 @@ export default class PostService {
     }
 
     const result = await Post.findAll({
+      offset: (page - 1) * 10,
+      limit: 10,
       include: [
         {
           model: User,
@@ -57,7 +63,7 @@ export default class PostService {
     return result;
   }
 
-  async getFriendsPost(userID: number) {
+  async getFriendsPost(userID: number, page: number) {
     console.log('friend');
     const user = await User.findOne({ where: { id: userID } });
     if (!user) {
@@ -69,6 +75,8 @@ export default class PostService {
     }
 
     const result = await Post.findAll({
+      offset: (page - 1) * 10,
+      limit: 10,
       include: [
         {
           model: User,
@@ -91,7 +99,18 @@ export default class PostService {
       photo: filesname,
       user_id: userID,
     });
-    return post;
+
+    const result = await Post.findOne({
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'firstName', 'lastName', 'photo'],
+        },
+      ],
+      where: { id: post.id },
+    });
+
+    return result;
   }
 
   async update(userID: number, postID: number, text: string, photo: string) {
@@ -121,11 +140,14 @@ export default class PostService {
       throw ApiError.BadRequest('Вы не можете удалить чужой пост');
     }
     const imgArr = post.photo.split(' ');
+    console.log(imgArr);
     const deletedPost = await Post.destroy({ where: { id: postID } }).then(() =>
-      imgArr.forEach((img) =>
-        fs.unlink(`${pathImages}/${img}`, (err) => {
-          if (err) throw err;
-        })
+      imgArr.forEach(
+        (img) =>
+          img &&
+          fs.unlink(`${pathImages}/${img}`, (err) => {
+            if (err) throw err;
+          })
       )
     );
     return deletedPost;
