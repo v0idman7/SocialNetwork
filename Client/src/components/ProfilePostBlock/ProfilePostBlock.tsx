@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { SwitchTransition, CSSTransition } from 'react-transition-group';
 import { deletePost } from '../../services/post';
+import { checkPosition, throttle } from '../../services/scroll';
 import getUserData from '../../services/user';
 import AddPostBlock from '../AddPostBlock/AddPostBlock';
 import ProfilePost from '../ProfilePost/ProfilePost';
@@ -19,23 +20,48 @@ type PostType = {
 };
 
 const ProfilePostBlock = ({
-  posts,
+  getPosts,
   news,
 }: {
-  posts: Array<PostType> | null;
+  getPosts: (page: number) => Promise<any>;
   news?: boolean;
 }) => {
   const [allPosts, setAllPosts] = useState<Array<PostType> | null>(null);
   const [userId, setUserId] = useState(0);
   const [hidden, setHidden] = useState(false);
+  const [page, setPage] = useState(1);
+  const [isEnd, setIsEnd] = useState(false);
 
   useEffect(() => {
+    const postList = document.querySelector('.profilePostBlock__list');
+    if (postList) {
+      postList.addEventListener(
+        'scroll',
+        throttle(checkPosition(postList, setPage), 1000)
+      );
+      postList.addEventListener(
+        'resize',
+        throttle(checkPosition(postList, setPage), 1000)
+      );
+    }
     getUserData().then((result) => setUserId(result.id));
   }, []);
 
   useEffect(() => {
-    if (posts) setAllPosts(posts);
-  }, [posts]);
+    if (!isEnd) {
+      getPosts(page)
+        .then((result: Array<PostType>) => {
+          setAllPosts((prevPosts) => {
+            if (prevPosts) {
+              return [...prevPosts, ...result];
+            }
+            return [...result];
+          });
+          if (result.length < 10) setIsEnd(true);
+        })
+        .catch((e) => console.error(e));
+    }
+  }, [page, getPosts, isEnd]);
 
   const handleDelete = (id: number) => () => {
     deletePost(id).then(() =>
@@ -46,6 +72,11 @@ const ProfilePostBlock = ({
   const hideClick = () => {
     setHidden((prevHidden) => !prevHidden);
   };
+
+  const addToState = (post: PostType) => {
+    setAllPosts((prevPosts) => [post, ...prevPosts!]);
+  };
+
   return (
     <div
       className={`profilePostBlock ${news ? 'newsPostBlock' : ''} ${
@@ -61,7 +92,7 @@ const ProfilePostBlock = ({
             }
             classNames='addPostBlockCss'
           >
-            <AddPostBlock hidden={hidden} />
+            <AddPostBlock hidden={hidden} addToState={addToState} />
           </CSSTransition>
         </SwitchTransition>
         <hr className='profilePostBlock__line' />
@@ -71,7 +102,15 @@ const ProfilePostBlock = ({
             type='button'
             onClick={hideClick}
           >
-            {hidden ? '▼' : '▲'}
+            <div
+              className={`${
+                hidden
+                  ? 'profilePostBlock__hideIcon'
+                  : 'profilePostBlock__hideIcon--reverse'
+              }`}
+            >
+              ▼
+            </div>
           </button>
           {allPosts &&
             allPosts.map((post: PostType) => (

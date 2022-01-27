@@ -10,7 +10,25 @@ type PostValues = {
   files: FileList | null;
 };
 
-const AddPostBlock = ({ hidden }: { hidden: boolean }) => {
+type PostType = {
+  id: number;
+  text: string;
+  photo: string;
+  User: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    photo: string;
+  };
+};
+
+const AddPostBlock = ({
+  hidden,
+  addToState,
+}: {
+  hidden: boolean;
+  addToState: (post: PostType) => void;
+}) => {
   const [countFiles, setCountFiles] = useState(0);
   const initialValues: PostValues = {
     text: '',
@@ -31,8 +49,10 @@ const AddPostBlock = ({ hidden }: { hidden: boolean }) => {
               data.append('images', values.files[i]);
             }
             const files = await uploadManyImages(data);
-            addPost(values.text, files.join(' '));
-          } else addPost(values.text, '');
+            addPost(values.text, files.join(' ')).then((result) =>
+              addToState(result)
+            );
+          } else addPost(values.text, '').then((result) => addToState(result));
         }
         setCountFiles(0);
         resetForm();

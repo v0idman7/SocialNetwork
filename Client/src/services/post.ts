@@ -1,7 +1,7 @@
 import { getAuthorization, refreshToken } from './auth';
 
-export const getProfilePost = () =>
-  fetch(`http://localhost:3000/api/post?user=true`, {
+export const getProfilePost = (page: number) =>
+  fetch(`http://localhost:3000/api/post?user=true&page=${page}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -11,7 +11,7 @@ export const getProfilePost = () =>
     .then(async (res) => {
       if (res.status !== 200) {
         if (res.status === 401) {
-          refreshToken().then(() => getProfilePost());
+          refreshToken().then(() => getProfilePost(page));
         }
         const responce = await res.json();
         throw new Error(responce.message);
@@ -21,7 +21,7 @@ export const getProfilePost = () =>
     .then((responce) => responce.json())
     .catch((e) => console.error(e));
 
-export const addPost = (text: string, filesname: string) => {
+export const addPost = (text: string, filesname: string) =>
   fetch(`http://localhost:3000/api/post`, {
     method: 'POST',
     headers: {
@@ -42,10 +42,9 @@ export const addPost = (text: string, filesname: string) => {
     })
     .then((responce) => responce.json())
     .catch((e) => console.error(e));
-};
 
-export const getNewsPost = () =>
-  fetch(`http://localhost:3000/api/post?user=true&friend=true`, {
+export const getNewsPost = (page: number) =>
+  fetch(`http://localhost:3000/api/post?user=true&friend=true&page=${page}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -55,8 +54,7 @@ export const getNewsPost = () =>
     .then(async (res) => {
       if (res.status !== 200) {
         if (res.status === 401) {
-          console.log('sdjfhaksdjhfadhfdfkjshkj');
-          refreshToken().then(() => getNewsPost());
+          refreshToken().then(() => getNewsPost(page));
         }
         const responce = await res.json();
         throw new Error(responce.message);

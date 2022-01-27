@@ -9,7 +9,8 @@
   padding: 0;
 
   &__wrap {
-    width: 1000px;
+    position: relative;
+    max-width: 1000px;
     margin: 0 auto;
     padding-top: 200px;
     transition: all 500ms ease-out;
@@ -46,10 +47,19 @@
     top: 0;
     width: 30px;
     height: 30px;
-    margin-left: 930px;
+    margin-left: 93%;
     border: 0;
     border-radius: 0 0 5px 5px;
     background: #1bbc9c5b;
+  }
+
+  &__hideIcon {
+    transition: all 1s;
+  }
+
+  &__hideIcon--reverse {
+    transform: rotate(180deg);
+    transition: all 1s;
   }
 
   &--big .profilePostBlock__wrap {
