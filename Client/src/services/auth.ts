@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const getAuthorization = () => {
   const authorization = localStorage.getItem('Authorization');
   if (!authorization) {
@@ -6,26 +8,27 @@ export const getAuthorization = () => {
   return authorization;
 };
 
+export const api = axios.create({
+  baseURL: 'http://localhost:3000/api/',
+  headers: { Authorization: getAuthorization() },
+  withCredentials: true,
+});
+
 export const userLogin = (signInData: { email: string; password: string }) =>
-  fetch(`http://localhost:3000/api/user/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-    body: JSON.stringify(signInData),
+  api({
+    method: 'post',
+    url: 'user/login',
+    data: signInData,
   })
-    .then(async (res) => {
-      if (res.status !== 200) {
-        const responce = await res.json();
-        throw new Error(responce.message);
-      }
-      return res;
+    .then((response) => {
+      localStorage.setItem(
+        'Authorization',
+        `Bearer ${response.data.accessToken}`
+      );
+      return response.data.user.id;
     })
-    .then((responce) => responce.json())
-    .then((result) => {
-      localStorage.setItem('Authorization', `Bearer ${result.accessToken}`);
-      return result.user.id;
+    .catch((e) => {
+      throw new Error(e.response.data.message);
     });
 
 export const userRegistration = (registrationData: {
@@ -35,49 +38,43 @@ export const userRegistration = (registrationData: {
   email: string;
   password: string;
 }) =>
-  fetch(`http://localhost:3000/api/user/registration`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-    body: JSON.stringify(registrationData),
+  api({
+    method: 'post',
+    url: 'user/registration',
+    data: registrationData,
   })
-    .then(async (res) => {
-      if (res.status !== 200) {
-        const responce = await res.json();
-        throw new Error(responce.message);
-      }
-      return res;
+    .then((response) => {
+      localStorage.setItem(
+        'Authorization',
+        `Bearer ${response.data.accessToken}`
+      );
+      return response.data.user.id;
     })
-    .then((responce) => responce.json())
-    .then((result) => {
-      localStorage.setItem('Authorization', `Bearer ${result.accessToken}`);
-      return result.user.id;
+    .catch((e) => {
+      throw new Error(e.response.data.message);
     });
 
 export const userLogout = () =>
-  fetch(`http://localhost:3000/api/user/logout`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
+  api({
+    method: 'post',
+    url: 'user/logout',
   })
-    .then((responce) => responce.json())
     .then(() => localStorage.removeItem('Authorization'))
-    .catch((error) => console.error('Ошибка:', error));
+    .catch((e) => {
+      throw new Error(e.response.data.message);
+    });
 
 export const refreshToken = () =>
-  fetch(`http://localhost:3000/api/user/refresh`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
+  api({
+    method: 'post',
+    url: 'user/refresh',
   })
-    .then((responce) => responce.json())
-    .then((result) =>
-      localStorage.setItem('Authorization', `Bearer ${result.accessToken}`)
+    .then((response) =>
+      localStorage.setItem(
+        'Authorization',
+        `Bearer ${response.data.accessToken}`
+      )
     )
-    .catch((error) => console.error('Ошибка:', error));
+    .catch((e) => {
+      throw new Error(e.response.data.message);
+    });

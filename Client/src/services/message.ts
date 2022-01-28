@@ -1,43 +1,27 @@
-import { getAuthorization, refreshToken } from './auth';
+import { api, refreshToken } from './auth';
 
 export const getMessages = (id: number) =>
-  fetch(`http://localhost:3000/api/message?id=${id}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getAuthorization(),
-    },
+  api({
+    method: 'get',
+    url: 'message/',
+    params: { id },
   })
-    .then(async (res) => {
-      if (res.status !== 200) {
-        if (res.status === 401) {
-          refreshToken().then(() => getMessages(id));
-        }
-        const responce = await res.json();
-        throw new Error(responce.message);
-      }
-      return res;
-    })
-    .then((responce) => responce.json())
-    .catch((e) => console.error(e));
+    .then((response) => response.data)
+    .catch((e) => {
+      if (e.status === 401) {
+        refreshToken().then(() => getMessages(id));
+      } else throw new Error(e.response.data.message);
+    });
 
 export const getChatId = (id: number) =>
-  fetch(`http://localhost:3000/api/chat&id=${id}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getAuthorization(),
-    },
+  api({
+    method: 'get',
+    url: 'chat/',
+    params: { id },
   })
-    .then(async (res) => {
-      if (res.status !== 200) {
-        if (res.status === 401) {
-          refreshToken().then(() => getChatId(id));
-        }
-        const responce = await res.json();
-        throw new Error(responce.message);
-      }
-      return res;
-    })
-    .then((responce) => responce.json())
-    .catch((e) => console.error(e));
+    .then((response) => response.data)
+    .catch((e) => {
+      if (e.status === 401) {
+        refreshToken().then(() => getChatId(id));
+      } else throw new Error(e.response.data.message);
+    });

@@ -1,24 +1,15 @@
-import { getAuthorization, refreshToken } from './auth';
+import { api, refreshToken } from './auth';
 
 const getUserData = () =>
-  fetch(`http://localhost:3000/api/user/`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getAuthorization(),
-    },
+  api({
+    method: 'get',
+    url: 'user/',
   })
-    .then(async (res) => {
-      if (res.status !== 200) {
-        if (res.status === 401) {
-          refreshToken().then(() => getUserData());
-        }
-        const responce = await res.json();
-        throw new Error(responce.message);
-      }
-      return res;
-    })
-    .then((responce) => responce.json())
-    .catch((e) => console.error(e));
+    .then((response) => response.data)
+    .catch((e) => {
+      if (e.status === 401) {
+        refreshToken().then(() => getUserData());
+      } else throw new Error(e.response.data.message);
+    });
 
 export default getUserData;

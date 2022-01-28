@@ -1,86 +1,53 @@
-import { getAuthorization, refreshToken } from './auth';
+import { api, refreshToken } from './auth';
 
 export const getProfilePost = (page: number) =>
-  fetch(`http://localhost:3000/api/post?user=true&page=${page}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getAuthorization(),
-    },
+  api({
+    method: 'get',
+    url: 'post/',
+    params: { user: true, page },
   })
-    .then(async (res) => {
-      if (res.status !== 200) {
-        if (res.status === 401) {
-          refreshToken().then(() => getProfilePost(page));
-        }
-        const responce = await res.json();
-        throw new Error(responce.message);
-      }
-      return res;
-    })
-    .then((responce) => responce.json())
-    .catch((e) => console.error(e));
+    .then((response) => response.data)
+    .catch((e) => {
+      if (e.status === 401) {
+        refreshToken().then(() => getProfilePost(page));
+      } else throw new Error(e.response.data.message);
+    });
 
 export const addPost = (text: string, filesname: string) =>
-  fetch(`http://localhost:3000/api/post`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getAuthorization(),
-    },
-    body: JSON.stringify({ text, filesname }),
+  api({
+    method: 'post',
+    url: 'post/',
+    data: { text, filesname },
   })
-    .then(async (res) => {
-      if (res.status !== 200) {
-        if (res.status === 401) {
-          refreshToken().then(() => addPost(text, filesname));
-        }
-        const responce = await res.json();
-        throw new Error(responce.message);
-      }
-      return res;
-    })
-    .then((responce) => responce.json())
-    .catch((e) => console.error(e));
+    .then((response) => response.data)
+    .catch((e) => {
+      if (e.status === 401) {
+        refreshToken().then(() => addPost(text, filesname));
+      } else throw new Error(e.response.data.message);
+    });
 
 export const getNewsPost = (page: number) =>
-  fetch(`http://localhost:3000/api/post?user=true&friend=true&page=${page}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getAuthorization(),
-    },
+  api({
+    method: 'get',
+    url: 'post/',
+    params: { user: true, friend: true, page },
   })
-    .then(async (res) => {
-      if (res.status !== 200) {
-        if (res.status === 401) {
-          refreshToken().then(() => getNewsPost(page));
-        }
-        const responce = await res.json();
-        throw new Error(responce.message);
-      }
-      return res;
-    })
-    .then((responce) => responce.json())
-    .catch((e) => console.error(e));
+    .then((response) => response.data)
+    .catch((e) => {
+      if (e.status === 401) {
+        refreshToken().then(() => getNewsPost(page));
+      } else throw new Error(e.response.data.message);
+    });
 
 export const deletePost = (id: number) =>
-  fetch(`http://localhost:3000/api/post?id=${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: getAuthorization(),
-    },
+  api({
+    method: 'delete',
+    url: 'post/',
+    params: { id },
   })
-    .then(async (res) => {
-      if (res.status !== 200) {
-        if (res.status === 401) {
-          refreshToken().then(() => deletePost(id));
-        }
-        const responce = await res.json();
-        throw new Error(responce.message);
-      }
-      return res;
-    })
-    .then((responce) => responce.json())
-    .catch((e) => console.error(e));
+    .then((response) => response.data)
+    .catch((e) => {
+      if (e.status === 401) {
+        refreshToken().then(() => deletePost(id));
+      } else throw new Error(e.response.data.message);
+    });
