@@ -29,13 +29,21 @@ export default class ProfileController {
     return null;
   }
 
-  async getProfileDataId(req: AuthRequest, res: Response, next: NextFunction) {
+  async updateProfileData(req: AuthRequest, res: Response, next: NextFunction) {
     try {
+      let userID = 0;
       if (typeof req.user !== 'string') {
-        const profileData = await this.service.getProfileData(req.user?.id);
-        return res.json(profileData);
+        userID = req.user?.id;
       }
-      throw ApiError.UnauthorizedError();
+      const profile = req.body;
+      const updateProfile = await this.service.updateProfileData(
+        userID,
+        profile
+      );
+      if (!updateProfile) {
+        throw ApiError.UnauthorizedError();
+      }
+      return res.json(updateProfile);
     } catch (e) {
       next(e);
     }

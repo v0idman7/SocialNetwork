@@ -1,9 +1,10 @@
-import { Express } from 'express';
+import fs from 'fs';
+import path from 'path';
 import { Router } from 'express';
 import { User } from '../database/models';
 import ApiError from '../exceptions/api.error';
 import imageMiddleware from '../middlewares/image.middleware';
-
+const pathImages = path.resolve(__dirname, '../images');
 const uploadRouter = Router();
 
 uploadRouter.post(
@@ -13,6 +14,14 @@ uploadRouter.post(
     try {
       if (req.file) {
         const id = req.query.id;
+        const userPhoto = await User.findOne({
+          attributes: ['photo'],
+          where: { id },
+        });
+        if (userPhoto?.photo)
+          fs.unlink(`${pathImages}/${userPhoto.photo}`, (err) => {
+            if (err) throw err;
+          });
         await User.update({ photo: req.file.filename }, { where: { id } });
         res.json(req.file);
       } else {
