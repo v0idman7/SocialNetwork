@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import './ProfilePost.scss';
 import ImageGallery from 'react-image-gallery';
 import camera from '../../images/camera.jpg';
+import like from '../../images/like.png';
+import dislike from '../../images/dislike.png';
+import comment from '../../images/comment.png';
 
 type ProfilePostType = {
   text?: string;
@@ -67,6 +70,25 @@ const ProfilePost: React.FC<ProfilePostType> = ({
           />
         </div>
       )}
+      <ul className='profilePost__buttonsList'>
+        <li className='profilePost__like'>
+          <img className='profilePost__likeImg' src={like} alt='like' />
+        </li>
+        <li className='profilePost__dislike'>
+          <img
+            className='profilePost__dislikeImg'
+            src={dislike}
+            alt='dislike'
+          />
+        </li>
+        <li className='profilePost__comment'>
+          <img
+            className='profilePost__commentImg'
+            src={comment}
+            alt='comment'
+          />
+        </li>
+      </ul>
     </li>
   );
 };
