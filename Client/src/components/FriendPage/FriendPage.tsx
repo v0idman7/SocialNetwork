@@ -10,7 +10,9 @@ const FriendPage = () => {
   const [profile, setProfile] = useState<ProfileType | null>(null);
 
   const handleClick = (id: number) => {
-    getProfileDataId(id).then((result) => setProfile(result));
+    getProfileDataId(id).then((result) =>
+      setProfile({ ...result, friend: true })
+    );
   };
   return (
     <div className='wrapCss'>

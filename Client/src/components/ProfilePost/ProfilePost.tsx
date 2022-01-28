@@ -48,11 +48,6 @@ const ProfilePost: React.FC<ProfilePostType> = ({
         </div>
         <span className='profilePost__userName'>{user.userName}</span>
         {deleteClick && (
-          <button className='profilePost__update' type='button'>
-            1
-          </button>
-        )}
-        {deleteClick && (
           <button
             className='profilePost__delete'
             type='button'

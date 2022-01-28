@@ -1,5 +1,6 @@
 import './ProfileInfo.scss';
 import { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import camera from '../../images/camera.jpg';
 import { addFriend, checkFriend, deleteFriend } from '../../services/friends';
 
@@ -23,6 +24,7 @@ export type ProfileType = {
     github?: string;
     linkedIn?: string;
   };
+  friend: boolean;
 };
 
 const ProfileInfo = ({
@@ -69,6 +71,15 @@ const ProfileInfo = ({
         </div>
         <span className='profileInfo__name'>
           {`${profile?.user.firstName} ${profile?.user.lastName}`}
+          {!profile.friend && (
+            <NavLink
+              className='profileInfo__editProfile'
+              type='button'
+              to='/editProfile'
+            >
+              1
+            </NavLink>
+          )}
         </span>
         {friend && (
           <button
@@ -79,36 +90,54 @@ const ProfileInfo = ({
             {isFriend ? 'Unsubscribe' : 'Subscribe'}
           </button>
         )}
-        <ul className='profileInfo__links'>
-          <li className='profileInfo__link'>
-            <a className='socialLink vk' href={profile?.social?.vk}>
-              Vk
-            </a>
-          </li>
-          <li className='profileInfo__link'>
-            <a
-              className='socialLink instagram'
-              href={profile?.social?.instagram}
-            >
-              Instagram
-            </a>
-          </li>
-          <li className='profileInfo__link'>
-            <a className='socialLink facebook' href={profile?.social?.facebook}>
-              Facebook
-            </a>
-          </li>
-          <li className='profileInfo__link'>
-            <a className='socialLink github' href={profile?.social?.github}>
-              GitHub
-            </a>
-          </li>
-          <li className='profileInfo__link'>
-            <a className='socialLink linkedIn' href={profile?.social?.linkedIn}>
-              LinkedIn
-            </a>
-          </li>
-        </ul>
+        {profile?.social && (
+          <ul className='profileInfo__links'>
+            {profile?.social?.vk && (
+              <li className='profileInfo__link'>
+                <a className='socialLink vk' href={profile?.social?.vk}>
+                  Vk
+                </a>
+              </li>
+            )}
+            {profile?.social?.instagram && (
+              <li className='profileInfo__link'>
+                <a
+                  className='socialLink instagram'
+                  href={profile?.social?.instagram}
+                >
+                  Instagram
+                </a>
+              </li>
+            )}
+            {profile?.social?.facebook && (
+              <li className='profileInfo__link'>
+                <a
+                  className='socialLink facebook'
+                  href={profile?.social?.facebook}
+                >
+                  Facebook
+                </a>
+              </li>
+            )}
+            {profile?.social?.github && (
+              <li className='profileInfo__link'>
+                <a className='socialLink github' href={profile?.social?.github}>
+                  GitHub
+                </a>
+              </li>
+            )}
+            {profile?.social?.linkedIn && (
+              <li className='profileInfo__link'>
+                <a
+                  className='socialLink linkedIn'
+                  href={profile?.social?.linkedIn}
+                >
+                  LinkedIn
+                </a>
+              </li>
+            )}
+          </ul>
+        )}
         <div className='profileInfo__contacts contact'>
           <span className='contact__name'>Email</span>
           <span className='contact__item'>{profile?.user.email}</span>

@@ -9,7 +9,9 @@ const ProfilePage = () => {
   const [profile, setProfile] = useState<ProfileType | null>(null);
 
   useEffect(() => {
-    getProfileData().then((profileData) => setProfile(profileData));
+    getProfileData().then((profileData) =>
+      setProfile({ ...profileData, friend: false })
+    );
   }, []);
 
   return (
