@@ -17,7 +17,7 @@ export default class LikePostService {
     return result;
   }
 
-  async add(postID: number, userID: number) {
+  async add(postID: number, userID: number, like: boolean) {
     const user = await User.findOne({ where: { id: userID } });
     if (!user) {
       throw ApiError.BadRequest('Такого пользователя не существует');
@@ -26,11 +26,26 @@ export default class LikePostService {
     if (!post) {
       throw ApiError.BadRequest('Такого поста не существует');
     }
-    const comment = await LikePost.create({
-      post_id: postID,
-      user_id: userID,
+    const userLike = await LikePost.findOne({
+      where: { post_id: postID, user_id: userID },
     });
-    return comment;
+    if (userLike && userLike.like === like) {
+      throw ApiError.BadRequest('Вы уже оценили этот пост');
+    }
+    if (userLike && userLike.like !== like) {
+      const newLike = await LikePost.update(
+        { like },
+        { where: { id: userLike.id } }
+      );
+      return newLike;
+    } else {
+      const newLike = await LikePost.create({
+        post_id: postID,
+        like,
+        user_id: userID,
+      });
+      return newLike;
+    }
   }
 
   async delete(userID: number, likePostID: number) {

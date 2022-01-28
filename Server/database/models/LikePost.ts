@@ -6,6 +6,7 @@ import { User } from './User';
 export interface LikePostInstance extends Model {
   id: number;
   post_id: number;
+  like: boolean;
   user_id: number;
 }
 
@@ -24,6 +25,10 @@ export const LikePost = sequelize.define<LikePostInstance>(
         model: Post,
         key: 'id',
       },
+      allowNull: false,
+    },
+    like: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
     },
     user_id: {
