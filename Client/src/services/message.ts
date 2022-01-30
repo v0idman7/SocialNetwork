@@ -8,7 +8,7 @@ export const getMessages = (id: number) =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => getMessages(id));
       } else throw new Error(e.response.data.message);
     });
@@ -21,7 +21,7 @@ export const getChatId = (id: number) =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => getChatId(id));
       } else throw new Error(e.response.data.message);
     });

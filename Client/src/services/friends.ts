@@ -8,7 +8,7 @@ export const getSearch = (search: string) =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => getSearch(search));
       } else throw new Error(e.response.data.message);
     });
@@ -20,7 +20,7 @@ export const getFriends = () =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => getFriends());
       } else throw new Error(e.response.data.message);
     });
@@ -32,7 +32,7 @@ export const getOther = () =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => getOther());
       } else throw new Error(e.response.data.message);
     });
@@ -45,7 +45,7 @@ export const checkFriend = (id: number) =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => checkFriend(id));
       } else throw new Error(e.response.data.message);
     });
@@ -58,7 +58,7 @@ export const addFriend = (id: number) =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => addFriend(id));
       } else throw new Error(e.response.data.message);
     });
@@ -71,7 +71,7 @@ export const deleteFriend = (id: number) =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => deleteFriend(id));
       } else throw new Error(e.response.data.message);
     });

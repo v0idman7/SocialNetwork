@@ -69,18 +69,20 @@
   &__dislike,
   &__comment {
     position: relative;
-    width: 30px;
+    min-width: 30px;
     height: 30px;
     margin-right: 10px;
     border-radius: 15px;
     border: 0;
     background-color: rgba(255, 255, 255, 0.4);
+    transition: all 500ms;
   }
 
   &__like--active,
   &__dislike--active,
   &__comment--active {
     background-color: rgba(255, 0, 0, 0.7);
+    transition: all 500ms;
   }
 
   &__likeImg,
@@ -99,5 +101,12 @@
 
   &__commentImg {
     top: 50%;
+  }
+
+  &__likeNum,
+  &__dislikeNum {
+    font-weight: 600;
+    line-height: 30px;
+    margin: 0 10px 0 30px;
   }
 }

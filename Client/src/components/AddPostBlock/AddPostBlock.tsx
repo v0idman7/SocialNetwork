@@ -20,6 +20,12 @@ type PostType = {
     lastName: string;
     photo: string;
   };
+  LikePosts: Array<{
+    id: number;
+    post_id: number;
+    like: boolean;
+    user_id: number;
+  }>;
 };
 
 const AddPostBlock = ({

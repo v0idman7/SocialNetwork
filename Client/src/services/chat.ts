@@ -7,7 +7,7 @@ export const getChats = () =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => getChats());
       } else throw new Error(e.response.data.message);
     });
@@ -20,7 +20,7 @@ export const getChatId = (id: number) =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => getChatId(id));
       } else throw new Error(e.response.data.message);
     });
@@ -33,7 +33,7 @@ export const addChat = (id: number) =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => addChat(id));
       } else throw new Error(e.response.data.message);
     });
@@ -46,7 +46,7 @@ export const deleteChat = (id: number) =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => addChat(id));
       } else throw new Error(e.response.data.message);
     });

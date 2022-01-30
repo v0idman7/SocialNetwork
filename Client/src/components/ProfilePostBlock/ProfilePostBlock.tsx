@@ -17,6 +17,12 @@ type PostType = {
     lastName: string;
     photo: string;
   };
+  LikePosts: Array<{
+    id: number;
+    post_id: number;
+    like: boolean;
+    user_id: number;
+  }>;
 };
 
 const ProfilePostBlock = ({
@@ -77,6 +83,14 @@ const ProfilePostBlock = ({
     setAllPosts((prevPosts) => [post, ...prevPosts!]);
   };
 
+  const currentUserLike = (post: PostType, userID: number) => {
+    const userLike = post.LikePosts.filter((like) => like.user_id === userID);
+    if (userLike.length > 0) {
+      return userLike[0].like ? 'like' : 'dislike';
+    }
+    return null;
+  };
+
   return (
     <div
       className={`profilePostBlock ${news ? 'newsPostBlock' : ''} ${
@@ -116,12 +130,16 @@ const ProfilePostBlock = ({
             allPosts.map((post: PostType) => (
               <ProfilePost
                 key={post.id}
+                id={post.id}
                 text={post.text}
                 photo={post.photo}
                 user={{
                   userPhoto: post.User.photo,
                   userName: `${post.User.firstName} ${post.User.lastName}`,
                 }}
+                like={post.LikePosts.filter((like) => like.like).length}
+                dislike={post.LikePosts.filter((like) => !like.like).length}
+                currentUserLike={currentUserLike(post, userId)}
                 deleteClick={+userId === +post.User.id && handleDelete(post.id)}
               />
             ))}

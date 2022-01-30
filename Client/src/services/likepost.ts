@@ -8,7 +8,7 @@ const addLike = (id: number, like: boolean) =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => addLike(id, like));
       } else throw new Error(e.response.data.message);
     });

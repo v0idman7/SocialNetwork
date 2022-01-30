@@ -2,15 +2,20 @@ import { useEffect, useState } from 'react';
 import './ProfilePost.scss';
 import ImageGallery from 'react-image-gallery';
 import camera from '../../images/camera.jpg';
-import like from '../../images/like.png';
-import dislike from '../../images/dislike.png';
-import comment from '../../images/comment.png';
+import likeImg from '../../images/like.png';
+import dislikeImg from '../../images/dislike.png';
+import commentImg from '../../images/comment.png';
+import addLike from '../../services/likepost';
 
 type ProfilePostType = {
+  id: number;
   text?: string;
   photo?: string;
   user: { userPhoto: string; userName: string };
   deleteClick?: (() => void) | false;
+  like: number;
+  dislike: number;
+  currentUserLike: 'like' | 'dislike' | null;
 };
 
 type imageType = {
@@ -18,12 +23,21 @@ type imageType = {
 };
 
 const ProfilePost: React.FC<ProfilePostType> = ({
+  id,
   text,
   photo,
   user,
   deleteClick,
+  like,
+  dislike,
+  currentUserLike,
 }) => {
   const [images, setImages] = useState<Array<imageType>>([]);
+  const [likeNum, setLikeNum] = useState(like);
+  const [dislikeNum, setDislikeNum] = useState(dislike);
+  const [yourLike, setYourLike] = useState<'like' | 'dislike' | null>(
+    currentUserLike
+  );
   useEffect(() => {
     if (photo) {
       setImages(
@@ -34,6 +48,32 @@ const ProfilePost: React.FC<ProfilePostType> = ({
       );
     }
   }, [photo]);
+
+  const onLike = () => {
+    addLike(id, true).then((response) => {
+      if (!response.newLike) {
+        setLikeNum((prevLikeNum) => prevLikeNum - 1);
+        setYourLike(null);
+      } else {
+        if (response.change)
+          setDislikeNum((prevDislikeNum) => prevDislikeNum - 1);
+        setLikeNum((prevLikeNum) => prevLikeNum + 1);
+        setYourLike('like');
+      }
+    });
+  };
+  const onDislike = () => {
+    addLike(id, false).then((response) => {
+      if (!response.newLike) {
+        setDislikeNum((prevDislikeNum) => prevDislikeNum - 1);
+        setYourLike(null);
+      } else {
+        if (response.change) setLikeNum((prevLikeNum) => prevLikeNum - 1);
+        setDislikeNum((prevDislikeNum) => prevDislikeNum + 1);
+        setYourLike('dislike');
+      }
+    });
+  };
 
   return (
     <li className='profilePost'>
@@ -71,20 +111,40 @@ const ProfilePost: React.FC<ProfilePostType> = ({
         </div>
       )}
       <ul className='profilePost__buttonsList'>
-        <li className='profilePost__like'>
-          <img className='profilePost__likeImg' src={like} alt='like' />
+        <li
+          className={`profilePost__like ${
+            yourLike === 'like' && 'profilePost__like--active'
+          }`}
+          onClick={onLike}
+          onKeyUp={onLike}
+          role='menuitem'
+        >
+          <img className='profilePost__likeImg' src={likeImg} alt='like' />
+          {likeNum > 0 && (
+            <span className='profilePost__likeNum'>{likeNum}</span>
+          )}
         </li>
-        <li className='profilePost__dislike'>
+        <li
+          className={`profilePost__dislike ${
+            yourLike === 'dislike' && 'profilePost__dislike--active'
+          }`}
+          onClick={onDislike}
+          onKeyUp={onDislike}
+          role='menuitem'
+        >
           <img
             className='profilePost__dislikeImg'
-            src={dislike}
+            src={dislikeImg}
             alt='dislike'
           />
+          {dislikeNum > 0 && (
+            <span className='profilePost__dislikeNum'>{dislikeNum}</span>
+          )}
         </li>
         <li className='profilePost__comment'>
           <img
             className='profilePost__commentImg'
-            src={comment}
+            src={commentImg}
             alt='comment'
           />
         </li>

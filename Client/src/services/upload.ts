@@ -9,7 +9,7 @@ export const uploadImage = (formData: FormData, id: number) =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => uploadImage(formData, id));
       } else throw new Error(e.response.data.message);
     });
@@ -22,7 +22,7 @@ export const uploadManyImages = (formData: FormData) =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => uploadManyImages(formData));
       } else throw new Error(e.response.data.message);
     });

@@ -7,7 +7,7 @@ export const getProfileData = () =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => getProfileData());
       } else throw new Error(e.response.data.message);
     });
@@ -20,7 +20,7 @@ export const getProfileDataId = (id: number) =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => getProfileDataId(id));
       } else throw new Error(e.response.data.message);
     });
@@ -45,7 +45,7 @@ export const updateProfileData = (profile: EditProfileValues) =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => updateProfileData(profile));
       } else throw new Error(e.response.data.message);
     });

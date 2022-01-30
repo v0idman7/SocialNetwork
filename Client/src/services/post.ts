@@ -8,7 +8,7 @@ export const getProfilePost = (page: number) =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => getProfilePost(page));
       } else throw new Error(e.response.data.message);
     });
@@ -21,7 +21,7 @@ export const addPost = (text: string, filesname: string) =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => addPost(text, filesname));
       } else throw new Error(e.response.data.message);
     });
@@ -34,7 +34,7 @@ export const getNewsPost = (page: number) =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => getNewsPost(page));
       } else throw new Error(e.response.data.message);
     });
@@ -47,7 +47,7 @@ export const deletePost = (id: number) =>
   })
     .then((response) => response.data)
     .catch((e) => {
-      if (e.status === 401) {
+      if (e.response.status === 401) {
         refreshToken().then(() => deletePost(id));
       } else throw new Error(e.response.data.message);
     });
