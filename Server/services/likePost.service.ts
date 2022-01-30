@@ -29,23 +29,24 @@ export default class LikePostService {
     const userLike = await LikePost.findOne({
       where: { post_id: postID, user_id: userID },
     });
+
     if (userLike && userLike.like === like) {
-      throw ApiError.BadRequest('Вы уже оценили этот пост');
+      const newLike = await LikePost.destroy({ where: { id: userLike.id } });
+      return { newLike: null };
     }
     if (userLike && userLike.like !== like) {
       const newLike = await LikePost.update(
         { like },
         { where: { id: userLike.id } }
       );
-      return newLike;
-    } else {
-      const newLike = await LikePost.create({
-        post_id: postID,
-        like,
-        user_id: userID,
-      });
-      return newLike;
+      return { newLike, change: true };
     }
+    const newLike = await LikePost.create({
+      post_id: postID,
+      like,
+      user_id: userID,
+    });
+    return { newLike, change: false };
   }
 
   async delete(userID: number, likePostID: number) {

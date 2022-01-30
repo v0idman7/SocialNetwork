@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { Op } from 'sequelize';
+import { LikePost } from '../database/models';
 import { Post } from '../database/models/Post';
 import { User } from '../database/models/User';
 import ApiError from '../exceptions/api.error';
@@ -21,6 +22,9 @@ export default class PostService {
         {
           model: User,
           attributes: ['id', 'firstName', 'lastName', 'photo'],
+        },
+        {
+          model: LikePost,
         },
       ],
       where: { user_id: userID },
@@ -50,6 +54,9 @@ export default class PostService {
         {
           model: User,
           attributes: ['id', 'firstName', 'lastName', 'photo'],
+        },
+        {
+          model: LikePost,
         },
       ],
       where: {
@@ -82,6 +89,9 @@ export default class PostService {
           model: User,
           attributes: ['id', 'firstName', 'lastName', 'photo'],
         },
+        {
+          model: LikePost,
+        },
       ],
       where: { user_id: { [Op.in]: userFriends } },
       order: [['id', 'DESC']],
@@ -105,6 +115,9 @@ export default class PostService {
         {
           model: User,
           attributes: ['id', 'firstName', 'lastName', 'photo'],
+        },
+        {
+          model: LikePost,
         },
       ],
       where: { id: post.id },
@@ -141,6 +154,7 @@ export default class PostService {
     }
     const imgArr = post.photo.split(' ');
     console.log(imgArr);
+    const deletedLike = await LikePost.destroy({ where: { post_id: postID } });
     const deletedPost = await Post.destroy({ where: { id: postID } }).then(() =>
       imgArr.forEach(
         (img) =>
