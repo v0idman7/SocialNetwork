@@ -1,13 +1,14 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../database.state';
 import { Post } from './Post';
-import { User } from './User';
+import { User, UserInstance } from './User';
 
 export interface CommentInstance extends Model {
   id: number;
   text: string;
   post_id: number;
   user_id: number;
+  User?: UserInstance;
 }
 
 export const Comment = sequelize.define<CommentInstance>(

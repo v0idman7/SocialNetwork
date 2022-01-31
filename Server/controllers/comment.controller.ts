@@ -1,5 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import ApiError from '../exceptions/api.error';
+import { AuthRequest } from '../middlewares/auth.middleware';
 import CommentService from '../services/comment.service';
 
 export default class CommentController {
@@ -9,13 +10,17 @@ export default class CommentController {
     this.service = new CommentService();
   }
 
-  async get(req: Request, res: Response, next: NextFunction) {
+  async get(req: AuthRequest, res: Response, next: NextFunction) {
     try {
+      let userID = 0;
+      if (typeof req.user !== 'string') {
+        userID = req.user?.id;
+      }
       const { post } = req.query;
       if (!post) {
         throw ApiError.BadRequest('Запрос с неверными параметрами или без них');
       }
-      const comments = await this.service.getComment(+post);
+      const comments = await this.service.getComment(+post, userID);
       return res.json(comments);
     } catch (e) {
       next(e);
@@ -23,10 +28,14 @@ export default class CommentController {
     return null;
   }
 
-  async add(req: Request, res: Response, next: NextFunction) {
+  async add(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-      const { userID, postID, text } = req.body;
-      const commentData = await this.service.add(userID, postID, text);
+      let userID = 0;
+      if (typeof req.user !== 'string') {
+        userID = req.user?.id;
+      }
+      const { post, text } = req.body;
+      const commentData = await this.service.add(userID, post, text);
       return res.json(commentData);
     } catch (e) {
       next(e);
@@ -34,7 +43,7 @@ export default class CommentController {
     return null;
   }
 
-  async update(req: Request, res: Response, next: NextFunction) {
+  async update(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const { commentID, userID, text } = req.body;
       const commentData = await this.service.update(commentID, userID, text);
@@ -45,10 +54,14 @@ export default class CommentController {
     return null;
   }
 
-  async delete(req: Request, res: Response, next: NextFunction) {
+  async delete(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-      const { userID, commentID } = req.body;
-      const commentData = await this.service.delete(userID, commentID);
+      let userID = 0;
+      if (typeof req.user !== 'string') {
+        userID = req.user?.id;
+      }
+      const { id } = req.body;
+      const commentData = await this.service.delete(userID, id);
       return res.json(commentData);
     } catch (e) {
       next(e);

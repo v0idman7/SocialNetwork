@@ -11,9 +11,6 @@ postRouter.get('/', authentication, (req, res, next) =>
 postRouter.post('/', authentication, (req, res, next) =>
   postController.add(req, res, next)
 );
-postRouter.put('/', authentication, (req, res, next) =>
-  postController.update(req, res, next)
-);
 postRouter.delete('/', authentication, (req, res, next) =>
   postController.delete(req, res, next)
 );

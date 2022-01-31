@@ -23,19 +23,4 @@ export default class MessageController {
     }
     return null;
   }
-
-  async add(req: AuthRequest, res: Response, next: NextFunction) {
-    try {
-      let userID = 0;
-      if (typeof req.user !== 'string') {
-        userID = req.user?.id;
-      }
-      const { friendID } = req.body;
-      const chat = null; //await this.service.addMessage(chauserID, friendID);
-      return res.json(chat);
-    } catch (e) {
-      next(e);
-    }
-    return null;
-  }
 }

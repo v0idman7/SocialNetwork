@@ -52,21 +52,6 @@ export default class PostController {
     return null;
   }
 
-  async update(req: AuthRequest, res: Response, next: NextFunction) {
-    try {
-      let userID = 0;
-      if (typeof req.user !== 'string') {
-        userID = req.user?.id;
-      }
-      const { postID, text, photo } = req.body;
-      const postData = await this.service.update(userID, postID, text, photo);
-      return res.json(postData);
-    } catch (e) {
-      next(e);
-    }
-    return null;
-  }
-
   async delete(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       let userID = 0;
