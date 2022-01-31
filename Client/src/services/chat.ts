@@ -1,8 +1,9 @@
-import { api, refreshToken } from './auth';
+import { api, getAuthorization, refreshToken } from './auth';
 
 export const getChats = () =>
   api({
     method: 'get',
+    headers: { Authorization: getAuthorization() },
     url: 'chat/',
   })
     .then((response) => response.data)
@@ -15,6 +16,7 @@ export const getChats = () =>
 export const getChatId = (id: number) =>
   api({
     method: 'get',
+    headers: { Authorization: getAuthorization() },
     url: 'chat/',
     params: { id },
   })
@@ -28,6 +30,7 @@ export const getChatId = (id: number) =>
 export const addChat = (id: number) =>
   api({
     method: 'post',
+    headers: { Authorization: getAuthorization() },
     url: 'chat/',
     params: { id },
   })
@@ -41,6 +44,7 @@ export const addChat = (id: number) =>
 export const deleteChat = (id: number) =>
   api({
     method: 'delete',
+    headers: { Authorization: getAuthorization() },
     url: 'chat/',
     params: { id },
   })

@@ -1,8 +1,9 @@
-import { api, refreshToken } from './auth';
+import { api, getAuthorization, refreshToken } from './auth';
 
 export const getSearch = (search: string) =>
   api({
     method: 'get',
+    headers: { Authorization: getAuthorization() },
     url: 'friend/all/',
     params: { search },
   })
@@ -16,6 +17,7 @@ export const getSearch = (search: string) =>
 export const getFriends = () =>
   api({
     method: 'get',
+    headers: { Authorization: getAuthorization() },
     url: 'friend/friends/',
   })
     .then((response) => response.data)
@@ -28,6 +30,7 @@ export const getFriends = () =>
 export const getOther = () =>
   api({
     method: 'get',
+    headers: { Authorization: getAuthorization() },
     url: 'friend/other/',
   })
     .then((response) => response.data)
@@ -40,6 +43,7 @@ export const getOther = () =>
 export const checkFriend = (id: number) =>
   api({
     method: 'get',
+    headers: { Authorization: getAuthorization() },
     url: 'friend/check/',
     params: { id },
   })
@@ -53,6 +57,7 @@ export const checkFriend = (id: number) =>
 export const addFriend = (id: number) =>
   api({
     method: 'get',
+    headers: { Authorization: getAuthorization() },
     url: 'friend/add/',
     params: { id },
   })
@@ -66,6 +71,7 @@ export const addFriend = (id: number) =>
 export const deleteFriend = (id: number) =>
   api({
     method: 'get',
+    headers: { Authorization: getAuthorization() },
     url: 'friend/delete/',
     params: { id },
   })

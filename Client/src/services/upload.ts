@@ -1,8 +1,9 @@
-import { api, refreshToken } from './auth';
+import { api, getAuthorization, refreshToken } from './auth';
 
 export const uploadImage = (formData: FormData, id: number) =>
   api({
     method: 'post',
+    headers: { Authorization: getAuthorization() },
     url: 'upload/one/',
     params: { id },
     data: formData,
@@ -17,6 +18,7 @@ export const uploadImage = (formData: FormData, id: number) =>
 export const uploadManyImages = (formData: FormData) =>
   api({
     method: 'post',
+    headers: { Authorization: getAuthorization() },
     url: 'upload/many/',
     data: formData,
   })

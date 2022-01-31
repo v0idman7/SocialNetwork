@@ -1,8 +1,9 @@
-import { api, refreshToken } from './auth';
+import { api, getAuthorization, refreshToken } from './auth';
 
 const addLike = (id: number, like: boolean) =>
   api({
     method: 'post',
+    headers: { Authorization: getAuthorization() },
     url: 'likepost/',
     data: { id, like },
   })

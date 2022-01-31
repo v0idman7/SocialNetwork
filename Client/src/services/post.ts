@@ -1,8 +1,9 @@
-import { api, refreshToken } from './auth';
+import { api, getAuthorization, refreshToken } from './auth';
 
 export const getProfilePost = (page: number) =>
   api({
     method: 'get',
+    headers: { Authorization: getAuthorization() },
     url: 'post/',
     params: { user: true, page },
   })
@@ -16,6 +17,7 @@ export const getProfilePost = (page: number) =>
 export const addPost = (text: string, filesname: string) =>
   api({
     method: 'post',
+    headers: { Authorization: getAuthorization() },
     url: 'post/',
     data: { text, filesname },
   })
@@ -29,6 +31,7 @@ export const addPost = (text: string, filesname: string) =>
 export const getNewsPost = (page: number) =>
   api({
     method: 'get',
+    headers: { Authorization: getAuthorization() },
     url: 'post/',
     params: { user: true, friend: true, page },
   })
@@ -42,6 +45,7 @@ export const getNewsPost = (page: number) =>
 export const deletePost = (id: number) =>
   api({
     method: 'delete',
+    headers: { Authorization: getAuthorization() },
     url: 'post/',
     params: { id },
   })

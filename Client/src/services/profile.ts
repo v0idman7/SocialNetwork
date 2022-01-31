@@ -1,8 +1,9 @@
-import { api, refreshToken } from './auth';
+import { api, getAuthorization, refreshToken } from './auth';
 
 export const getProfileData = () =>
   api({
     method: 'get',
+    headers: { Authorization: getAuthorization() },
     url: 'profile/',
   })
     .then((response) => response.data)
@@ -15,6 +16,7 @@ export const getProfileData = () =>
 export const getProfileDataId = (id: number) =>
   api({
     method: 'get',
+    headers: { Authorization: getAuthorization() },
     url: 'profile/',
     params: { id },
   })
@@ -40,6 +42,7 @@ interface EditProfileValues {
 export const updateProfileData = (profile: EditProfileValues) =>
   api({
     method: 'post',
+    headers: { Authorization: getAuthorization() },
     url: 'profile/',
     data: profile,
   })

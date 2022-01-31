@@ -1,8 +1,9 @@
-import { api, refreshToken } from './auth';
+import { api, getAuthorization, refreshToken } from './auth';
 
 export const getMessages = (id: number) =>
   api({
     method: 'get',
+    headers: { Authorization: getAuthorization() },
     url: 'message/',
     params: { id },
   })
@@ -16,6 +17,7 @@ export const getMessages = (id: number) =>
 export const getChatId = (id: number) =>
   api({
     method: 'get',
+    headers: { Authorization: getAuthorization() },
     url: 'chat/',
     params: { id },
   })
