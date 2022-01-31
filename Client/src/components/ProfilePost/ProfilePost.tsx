@@ -6,6 +6,7 @@ import likeImg from '../../images/like.png';
 import dislikeImg from '../../images/dislike.png';
 import commentImg from '../../images/comment.png';
 import addLike from '../../services/likepost';
+import CommentBlock from '../CommentBlock/CommentBlock';
 
 type ProfilePostType = {
   id: number;
@@ -38,6 +39,7 @@ const ProfilePost: React.FC<ProfilePostType> = ({
   const [yourLike, setYourLike] = useState<'like' | 'dislike' | null>(
     currentUserLike
   );
+  const [comments, setComments] = useState(false);
   useEffect(() => {
     if (photo) {
       setImages(
@@ -141,7 +143,12 @@ const ProfilePost: React.FC<ProfilePostType> = ({
             <span className='profilePost__dislikeNum'>{dislikeNum}</span>
           )}
         </li>
-        <li className='profilePost__comment'>
+        <li
+          className='profilePost__comment'
+          onClick={() => setComments((prevComments) => !prevComments)}
+          onKeyUp={() => setComments((prevComments) => !prevComments)}
+          role='menuitem'
+        >
           <img
             className='profilePost__commentImg'
             src={commentImg}
@@ -149,6 +156,7 @@ const ProfilePost: React.FC<ProfilePostType> = ({
           />
         </li>
       </ul>
+      {comments && <CommentBlock postID={id} />}
     </li>
   );
 };
