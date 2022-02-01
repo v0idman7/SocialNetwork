@@ -75,5 +75,9 @@ export const refreshToken = () =>
       )
     )
     .catch((e) => {
+      localStorage.removeItem('Authorization');
+      localStorage.removeItem('isAuthenticated');
+      // eslint-disable-next-line no-restricted-globals
+      location.pathname = '/login';
       throw new Error(e.response.data.message);
     });

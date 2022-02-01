@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import LoginPage from '../LoginPage/LoginPage';
 import MainNavigation from '../MainNavigation/MainNavigation';
 import RegistrationPage from '../RegistrationPage/RegistrationPage';
@@ -30,7 +30,8 @@ const App = () => {
   return (
     <Routes>
       <Route path='/' element={<MainNavigation disable auth={changeAuth} />}>
-        <Route index element={<LoginPage auth={changeAuth} />} />
+        <Route index element={<Navigate to='/login' />} />
+        <Route path='/login' element={<LoginPage auth={changeAuth} />} />
         <Route
           path='/registration'
           element={<RegistrationPage auth={changeAuth} />}
