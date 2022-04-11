@@ -1,8 +1,9 @@
-import './RegistrationPage.scss';
 import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+
+import './RegistrationPage.scss';
 import { userRegistration } from '../../services/auth';
 import { uploadImage } from '../../services/upload';
 import UploadButton from '../UploadButton/UploadButton';
@@ -33,6 +34,24 @@ const RegistrationPage = ({ auth }: { auth: (login: boolean) => void }) => {
   const phoneRegExp =
     /^\s{0,}\+{1,1}375\s{0,}\({0,1}(([2]{1}([5]{1}|[9]{1}))|([3]{1}[3]{1})|([4]{1}[4]{1}))\){0,1}\s{0,}\s{0,}[0-9]{3,3}\s{0,}[0-9]{4,4}$/;
 
+  const validationSchema = Yup.object({
+    firstName: Yup.string()
+      .min(6, 'Must be 6 characters or more')
+      .required('Required'),
+    lastName: Yup.string()
+      .min(6, 'Must be 6 characters or more')
+      .required('Required'),
+    email: Yup.string().email('Invalid email address').required('Required'),
+    phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid'),
+    password: Yup.string()
+      .min(6, 'Must be 6 characters or more')
+      .required('Required'),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password')], 'Password mismatch')
+      .min(6, 'Must be 6 characters or more')
+      .required('Required'),
+  });
+
   const navigate = useNavigate();
 
   const sendFile = (img: Blob | string, id: number) => {
@@ -45,23 +64,7 @@ const RegistrationPage = ({ auth }: { auth: (login: boolean) => void }) => {
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={Yup.object({
-        firstName: Yup.string()
-          .min(6, 'Must be 6 characters or more')
-          .required('Required'),
-        lastName: Yup.string()
-          .min(6, 'Must be 6 characters or more')
-          .required('Required'),
-        email: Yup.string().email('Invalid email address').required('Required'),
-        phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid'),
-        password: Yup.string()
-          .min(6, 'Must be 6 characters or more')
-          .required('Required'),
-        confirmPassword: Yup.string()
-          .oneOf([Yup.ref('password')], 'Password mismatch')
-          .min(6, 'Must be 6 characters or more')
-          .required('Required'),
-      })}
+      validationSchema={validationSchema}
       validateOnBlur
       onSubmit={(values, actions) => {
         userRegistration({

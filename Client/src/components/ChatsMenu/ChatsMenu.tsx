@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { SwitchTransition, CSSTransition } from 'react-transition-group';
+
+import './ChatsMenu.scss';
 import { addChat, deleteChat, getChats } from '../../services/chat';
 import ChatsItem from '../ChatsItem/ChatsItem';
 import FriendBlock from '../FriendBlock/FriendBlock';
 import MessageBlock from '../MessageBlock/MessageBlock';
-import './ChatsMenu.scss';
 import plus from '../../images/plus.png';
 import FriendSearch from '../FriendSearch/FriendSearch';
 

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+
+import './CommentBlock.scss';
 import camera from '../../images/camera.jpg';
 import { addComment, deleteComment, getComments } from '../../services/comment';
-import './CommentBlock.scss';
 
 type CommentType = {
   id: number;

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { SwitchTransition, CSSTransition } from 'react-transition-group';
+
+import './ProfilePostBlock.scss';
 import { deletePost } from '../../services/post';
 import { checkPosition, throttle } from '../../services/scroll';
 import getUserData from '../../services/user';
 import AddPostBlock from '../AddPostBlock/AddPostBlock';
 import ProfilePost from '../ProfilePost/ProfilePost';
-import './ProfilePostBlock.scss';
 
 type PostType = {
   id: number;

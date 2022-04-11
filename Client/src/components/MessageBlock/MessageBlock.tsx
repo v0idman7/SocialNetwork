@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 import { nanoid } from 'nanoid';
-import MessageItem from '../MessageItem/MessageItem';
+
 import './MessageBlock.scss';
+import MessageItem from '../MessageItem/MessageItem';
 import camera from '../../images/camera.jpg';
 import { getMessages } from '../../services/message';
 

@@ -1,7 +1,8 @@
-import './LoginPage.scss';
 import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
+
+import './LoginPage.scss';
 import { userLogin } from '../../services/auth';
 
 interface LoginValues {
@@ -11,17 +12,18 @@ interface LoginValues {
 
 const LoginPage = ({ auth }: { auth: (login: boolean) => void }) => {
   const initialValues: LoginValues = { email: '', password: '' };
+  const validationSchema = Yup.object({
+    email: Yup.string().email('Invalid email address').required('Required'),
+    password: Yup.string()
+      .min(6, 'Must be 6 characters or more')
+      .required('Required'),
+  });
   const navigate = useNavigate();
 
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={Yup.object({
-        email: Yup.string().email('Invalid email address').required('Required'),
-        password: Yup.string()
-          .min(6, 'Must be 6 characters or more')
-          .required('Required'),
-      })}
+      validationSchema={validationSchema}
       validateOnBlur
       onSubmit={(values, actions) => {
         userLogin(values)

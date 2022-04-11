@@ -1,7 +1,8 @@
 import { Link, Outlet, useNavigate } from 'react-router-dom';
+
+import './MainNavigation.scss';
 import { userLogout } from '../../services/auth';
 import PageRoutes from '../PageRoutes/PageRoutes';
-import './MainNavigation.scss';
 
 type MainNavigationType = {
   disable?: boolean;

@@ -1,11 +1,12 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
+
+import './PageRoutes.scss';
 import ChatsMenu from '../ChatsMenu/ChatsMenu';
 import EditProfilePage from '../EditProfilePage/EditProfilePage';
 import FriendPage from '../FriendPage/FriendPage';
 import NewsPage from '../NewsPage/NewsPage';
 import ProfilePage from '../ProfilePage/ProfilePage';
-import './PageRoutes.scss';
 
 const PageRoutes = () => {
   const location = useLocation();

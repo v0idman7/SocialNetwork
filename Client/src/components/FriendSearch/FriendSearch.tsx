@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+
+import './FriendSearch.scss';
 import useDebounce from '../../hooks/useDebounce';
 import { getSearch } from '../../services/friends';
-import './FriendSearch.scss';
 import camera from '../../images/camera.jpg';
 
 type friendType = {

@@ -1,9 +1,10 @@
 import { Field, Form, Formik } from 'formik';
 import { useState } from 'react';
+
+import './AddPostBlock.scss';
 import { addPost } from '../../services/post';
 import { uploadManyImages } from '../../services/upload';
 import UploadButton from '../UploadButton/UploadButton';
-import './AddPostBlock.scss';
 
 type PostValues = {
   text: string;

@@ -1,5 +1,6 @@
-import './ProfilePage.scss';
 import { useEffect, useState } from 'react';
+
+import './ProfilePage.scss';
 import { getProfilePost } from '../../services/post';
 import { getProfileData } from '../../services/profile';
 import ProfileInfo, { ProfileType } from '../ProfileInfo/ProfileInfo';

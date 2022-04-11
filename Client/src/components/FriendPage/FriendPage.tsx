@@ -1,10 +1,11 @@
 import { SwitchTransition, CSSTransition } from 'react-transition-group';
 import { useState } from 'react';
+
+import './FriendPage.scss';
 import { getProfileDataId } from '../../services/profile';
 import FriendBlock from '../FriendBlock/FriendBlock';
 import FriendSearch from '../FriendSearch/FriendSearch';
 import ProfileInfo, { ProfileType } from '../ProfileInfo/ProfileInfo';
-import './FriendPage.scss';
 
 const FriendPage = () => {
   const [profile, setProfile] = useState<ProfileType | null>(null);

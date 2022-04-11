@@ -1,5 +1,5 @@
-import add from '../../images/add.svg';
 import './UploadButton.scss';
+import add from '../../images/add.svg';
 
 type UploadButtonType = {
   one: boolean;

@@ -1,11 +1,11 @@
-import './EditProfilePage.scss';
 import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+
+import './EditProfilePage.scss';
 import { uploadImage } from '../../services/upload';
 import UploadButton from '../UploadButton/UploadButton';
-import { ProfileType } from '../ProfileInfo/ProfileInfo';
 import { getProfileData, updateProfileData } from '../../services/profile';
 
 interface EditProfileValues {
@@ -47,6 +47,18 @@ const EditProfilePage = () => {
   const phoneRegExp =
     /^\s{0,}\+{1,1}375\s{0,}\({0,1}(([2]{1}([5]{1}|[9]{1}))|([3]{1}[3]{1})|([4]{1}[4]{1}))\){0,1}\s{0,}\s{0,}[0-9]{3,3}\s{0,}[0-9]{4,4}$/;
 
+  const validationSchema = Yup.object({
+    firstName: Yup.string().min(6, 'Must be 6 characters or more'),
+    lastName: Yup.string().min(6, 'Must be 6 characters or more'),
+    email: Yup.string().email('Invalid email address'),
+    phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid'),
+    vk: Yup.string(),
+    instagram: Yup.string(),
+    facebook: Yup.string(),
+    github: Yup.string(),
+    linkedIn: Yup.string(),
+  });
+
   const navigate = useNavigate();
 
   const sendFile = (img: Blob | string, id: number) => {
@@ -61,22 +73,9 @@ const EditProfilePage = () => {
       <div className='wrapCss'>
         <Formik
           initialValues={initialValues}
-          validationSchema={Yup.object({
-            firstName: Yup.string().min(6, 'Must be 6 characters or more'),
-            lastName: Yup.string().min(6, 'Must be 6 characters or more'),
-            email: Yup.string().email('Invalid email address'),
-            phone: Yup.string().matches(
-              phoneRegExp,
-              'Phone number is not valid'
-            ),
-            vk: Yup.string(),
-            instagram: Yup.string(),
-            facebook: Yup.string(),
-            github: Yup.string(),
-            linkedIn: Yup.string(),
-          })}
+          validationSchema={validationSchema}
           validateOnBlur
-          onSubmit={(values, actions) => {
+          onSubmit={(values) => {
             updateProfileData({
               firstName: values.firstName,
               lastName: values.lastName,

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import './ProfilePost.scss';
 import ImageGallery from 'react-image-gallery';
 import camera from '../../images/camera.jpg';

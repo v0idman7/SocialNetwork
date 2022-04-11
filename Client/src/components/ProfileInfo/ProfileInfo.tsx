@@ -1,5 +1,6 @@
-import './ProfileInfo.scss';
 import { useEffect, useState } from 'react';
+
+import './ProfileInfo.scss';
 import { NavLink } from 'react-router-dom';
 import camera from '../../images/camera.jpg';
 import { addFriend, checkFriend, deleteFriend } from '../../services/friends';

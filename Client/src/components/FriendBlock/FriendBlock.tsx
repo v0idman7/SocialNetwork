@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { getFriends, getOther } from '../../services/friends';
+
 import './FriendBlock.scss';
+import { getFriends, getOther } from '../../services/friends';
 import camera from '../../images/camera.jpg';
 
 type friendType = {

@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+
+import './App.scss';
 import LoginPage from '../LoginPage/LoginPage';
 import MainNavigation from '../MainNavigation/MainNavigation';
 import RegistrationPage from '../RegistrationPage/RegistrationPage';
-import './App.scss';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(
