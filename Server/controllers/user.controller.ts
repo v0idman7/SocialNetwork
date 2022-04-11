@@ -4,13 +4,9 @@ import { AuthRequest } from '../middlewares/auth.middleware';
 import UserService from '../services/user.service';
 
 export default class UserController {
-  service;
+  private service = new UserService();
 
-  constructor() {
-    this.service = new UserService();
-  }
-
-  async registration(req: Request, res: Response, next: NextFunction) {
+  registration = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { firstName, lastName, phone, email, password } = req.body;
       const userData = await this.service.registration(
@@ -28,10 +24,9 @@ export default class UserController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 
-  async login(req: Request, res: Response, next: NextFunction) {
+  login = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email, password } = req.body;
       const userData = await this.service.login(email, password);
@@ -43,10 +38,9 @@ export default class UserController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 
-  async logout(req: Request, res: Response, next: NextFunction) {
+  logout = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const refreshToken = req.cookies.refreshToken;
       const token = await this.service.logout(refreshToken);
@@ -55,10 +49,9 @@ export default class UserController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 
-  async refresh(req: Request, res: Response, next: NextFunction) {
+  refresh = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { refreshToken } = req.cookies;
       const userData = await this.service.refresh(refreshToken);
@@ -70,10 +63,9 @@ export default class UserController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 
-  async getUserData(req: AuthRequest, res: Response, next: NextFunction) {
+  getUserData = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       let userID = 0;
       if (typeof req.user !== 'string') {
@@ -84,6 +76,5 @@ export default class UserController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 }

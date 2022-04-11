@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import ProfileController from '../controllers/profile.controller';
 import authentication from '../middlewares/auth.middleware';
 

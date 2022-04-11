@@ -1,15 +1,12 @@
 import { Response, NextFunction } from 'express';
+
 import { AuthRequest } from '../middlewares/auth.middleware';
 import MessageService from '../services/message.service';
 
 export default class MessageController {
-  service;
+  private service = new MessageService();
 
-  constructor() {
-    this.service = new MessageService();
-  }
-
-  async get(req: AuthRequest, res: Response, next: NextFunction) {
+  get = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       let userID = 0;
       if (typeof req.user !== 'string') {
@@ -21,6 +18,5 @@ export default class MessageController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 }

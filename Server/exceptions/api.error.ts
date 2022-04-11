@@ -1,6 +1,5 @@
 export default class ApiError extends Error {
   status;
-
   errors;
 
   constructor(status: number, message: string, errors = []) {

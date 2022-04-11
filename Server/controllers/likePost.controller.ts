@@ -1,16 +1,12 @@
-import { Request, Response, NextFunction } from 'express';
-import ApiError from '../exceptions/api.error';
+import { Response, NextFunction } from 'express';
+
 import { AuthRequest } from '../middlewares/auth.middleware';
 import LikePostService from '../services/likePost.service';
 
 export default class LikePostController {
-  service;
+  private service = new LikePostService();
 
-  constructor() {
-    this.service = new LikePostService();
-  }
-
-  async add(req: AuthRequest, res: Response, next: NextFunction) {
+  add = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       let userID = 0;
       if (typeof req.user !== 'string') {
@@ -22,6 +18,5 @@ export default class LikePostController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 }

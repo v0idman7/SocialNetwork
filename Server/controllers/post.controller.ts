@@ -1,16 +1,13 @@
 import { Response, NextFunction } from 'express';
+
 import PostService from '../services/post.service';
 import ApiError from '../exceptions/api.error';
 import { AuthRequest } from '../middlewares/auth.middleware';
 
 export default class PostController {
-  service;
+  private service = new PostService();
 
-  constructor() {
-    this.service = new PostService();
-  }
-
-  async get(req: AuthRequest, res: Response, next: NextFunction) {
+  get = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       let userID = 0;
       if (typeof req.user !== 'string') {
@@ -34,10 +31,9 @@ export default class PostController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 
-  async add(req: AuthRequest, res: Response, next: NextFunction) {
+  add = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       let userID = 0;
       if (typeof req.user !== 'string') {
@@ -49,10 +45,9 @@ export default class PostController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 
-  async delete(req: AuthRequest, res: Response, next: NextFunction) {
+  delete = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       let userID = 0;
       if (typeof req.user !== 'string') {
@@ -67,6 +62,5 @@ export default class PostController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 }

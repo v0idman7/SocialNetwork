@@ -1,10 +1,44 @@
-import { Comment } from '../database/models';
+import { Comment, CommentInstance } from '../database/models';
 import { Post } from '../database/models/Post';
-import { User } from '../database/models/User';
+import { User, UserInstance } from '../database/models/User';
 import ApiError from '../exceptions/api.error';
 
-export default class CommentService {
-  async getComment(postID: number, userID: number) {
+export interface ICommentService {
+  getComment: (
+    postID: number,
+    userID: number
+  ) => Promise<
+    Array<{
+      id: number;
+      text: string;
+      post_id: number;
+      user_id: number;
+      User: UserInstance | undefined;
+      commentOwner: boolean;
+    }>
+  >;
+  add: (
+    userID: number,
+    postID: number,
+    text: string
+  ) => Promise<{
+    id: number;
+    text: string;
+    post_id: number;
+    user_id: number;
+    User: UserInstance | undefined;
+    commentOwner: boolean;
+  }>;
+  update: (
+    commentID: number,
+    userID: number,
+    text: string
+  ) => Promise<[number, Array<CommentInstance>]>;
+  delete: (userID: number, commentID: number) => Promise<number>;
+}
+
+export default class CommentService implements ICommentService {
+  getComment = async (postID: number, userID: number) => {
     const post = await Post.findOne({ where: { id: postID } });
     if (!post) {
       throw ApiError.BadRequest('Такого поста не существует');
@@ -29,9 +63,9 @@ export default class CommentService {
       commentOwner: comment!.User!.id === userID,
     }));
     return result;
-  }
+  };
 
-  async add(userID: number, postID: number, text: string) {
+  add = async (userID: number, postID: number, text: string) => {
     console.log(userID, postID, text);
     const user = await User.findOne({ where: { id: userID } });
     if (!user) {
@@ -64,9 +98,9 @@ export default class CommentService {
       User: result!.User,
       commentOwner: result!.User!.id === userID,
     };
-  }
+  };
 
-  async update(commentID: number, userID: number, text: string) {
+  update = async (commentID: number, userID: number, text: string) => {
     const comment = await Comment.findOne({ where: { id: commentID } });
     if (!comment) {
       throw ApiError.BadRequest('Такого комментария не существует');
@@ -81,9 +115,9 @@ export default class CommentService {
       { where: { id: commentID } }
     );
     return updatedComment;
-  }
+  };
 
-  async delete(userID: number, commentID: number) {
+  delete = async (userID: number, commentID: number) => {
     const comment = await Comment.findOne({ where: { id: commentID } });
     if (!comment) {
       throw ApiError.BadRequest('Такого комментария не существует');
@@ -97,5 +131,5 @@ export default class CommentService {
     }
     const deletedComment = await Comment.destroy({ where: { id: commentID } });
     return deletedComment;
-  }
+  };
 }

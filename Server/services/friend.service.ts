@@ -1,9 +1,28 @@
-import { User } from '../database/models/User';
-import ApiError from '../exceptions/api.error';
 import { Op } from 'sequelize';
 
-export default class FriendService {
-  async getFriends(userID: number) {
+import { User, UserInstance } from '../database/models/User';
+import ApiError from '../exceptions/api.error';
+
+export interface IFriendService {
+  getFriends: (userID: number) => Promise<Array<UserInstance>>;
+  checkFriend: (userID: number, friendID: number) => Promise<boolean>;
+  getOther: (userID: number) => Promise<Array<UserInstance>>;
+  add: (
+    userID: number,
+    friendID: number
+  ) => Promise<[number, Array<UserInstance>]>;
+  delete: (
+    userID: number,
+    friendID: number
+  ) => Promise<[number, Array<UserInstance>]>;
+  getAll: (
+    user_id: number,
+    search?: string | undefined
+  ) => Promise<Array<UserInstance>>;
+}
+
+export default class FriendService implements IFriendService {
+  getFriends = async (userID: number) => {
     const user = await User.findOne({
       where: { id: userID },
     });
@@ -27,9 +46,9 @@ export default class FriendService {
     });
 
     return result;
-  }
+  };
 
-  async checkFriend(userID: number, friendID: number) {
+  checkFriend = async (userID: number, friendID: number) => {
     const user = await User.findOne({
       where: { id: userID },
     });
@@ -45,9 +64,9 @@ export default class FriendService {
     const result = userFriends.includes(friendID.toString());
 
     return result;
-  }
+  };
 
-  async getOther(userID: number) {
+  getOther = async (userID: number) => {
     const user = await User.findOne({
       where: { id: userID },
     });
@@ -71,9 +90,9 @@ export default class FriendService {
     });
 
     return result;
-  }
+  };
 
-  async add(userID: number, friendID: number) {
+  add = async (userID: number, friendID: number) => {
     if (userID === friendID) {
       throw ApiError.BadRequest('Вы не можете добавить себя в друзья');
     }
@@ -96,9 +115,9 @@ export default class FriendService {
     );
 
     return result;
-  }
+  };
 
-  async delete(userID: number, friendID: number) {
+  delete = async (userID: number, friendID: number) => {
     if (userID === friendID) {
       throw ApiError.BadRequest('Вы не можете удалить себя из друзей');
     }
@@ -122,9 +141,9 @@ export default class FriendService {
     );
 
     return result;
-  }
+  };
 
-  async getAll(user_id: number, search?: string) {
+  getAll = async (user_id: number, search?: string) => {
     if (search) {
       return User.findAll({
         attributes: ['id', 'firstName', 'lastName', 'photo'],
@@ -156,5 +175,5 @@ export default class FriendService {
         },
       });
     }
-  }
+  };
 }

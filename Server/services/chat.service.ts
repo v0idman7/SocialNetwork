@@ -1,11 +1,33 @@
 import { Op } from 'sequelize';
+
 import { Message } from '../database/models';
 import { Chat } from '../database/models/Chat';
-import { User } from '../database/models/User';
+import { User, UserInstance } from '../database/models/User';
 import ApiError from '../exceptions/api.error';
 
-export default class ChatService {
-  async getChat(userId: number) {
+export interface IChatService {
+  getChat: (userId: number) => Promise<
+    Array<{
+      id: number;
+      user_id: number;
+      friend_id: number;
+      friend: UserInstance | undefined;
+    }>
+  >;
+  addChat: (
+    userId: number,
+    friendId: number
+  ) => Promise<{
+    id: number;
+    user_id: number;
+    friend_id: number;
+    friend: UserInstance | undefined;
+  }>;
+  deleteChat: (userId: number, chatId: number) => Promise<number>;
+}
+
+export default class ChatService implements IChatService {
+  getChat = async (userId: number) => {
     const chats = await Chat.findAll({
       include: [
         {
@@ -41,9 +63,9 @@ export default class ChatService {
       };
     });
     return result;
-  }
+  };
 
-  async addChat(userId: number, friendId: number) {
+  addChat = async (userId: number, friendId: number) => {
     const friend = await User.findOne({ where: { id: friendId } });
     if (!friend) {
       throw ApiError.BadRequest('Такого пользователя не существует');
@@ -106,9 +128,9 @@ export default class ChatService {
       friend_id: chat.firstUser_id,
       friend: chat.firstUser,
     };
-  }
+  };
 
-  async deleteChat(userId: number, chatId: number) {
+  deleteChat = async (userId: number, chatId: number) => {
     const chat = await Chat.findOne({ where: { id: chatId } });
     if (!chat) {
       throw ApiError.BadRequest('Такого чата не существует');
@@ -123,5 +145,5 @@ export default class ChatService {
       where: { id: chatId },
     });
     return destroyChat;
-  }
+  };
 }

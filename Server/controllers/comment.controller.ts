@@ -1,16 +1,13 @@
 import { Response, NextFunction } from 'express';
+
 import ApiError from '../exceptions/api.error';
 import { AuthRequest } from '../middlewares/auth.middleware';
 import CommentService from '../services/comment.service';
 
 export default class CommentController {
-  service;
+  private service = new CommentService();
 
-  constructor() {
-    this.service = new CommentService();
-  }
-
-  async get(req: AuthRequest, res: Response, next: NextFunction) {
+  get = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       let userID = 0;
       if (typeof req.user !== 'string') {
@@ -25,10 +22,9 @@ export default class CommentController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 
-  async add(req: AuthRequest, res: Response, next: NextFunction) {
+  add = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       let userID = 0;
       if (typeof req.user !== 'string') {
@@ -40,10 +36,9 @@ export default class CommentController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 
-  async update(req: AuthRequest, res: Response, next: NextFunction) {
+  update = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       const { commentID, userID, text } = req.body;
       const commentData = await this.service.update(commentID, userID, text);
@@ -51,10 +46,9 @@ export default class CommentController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 
-  async delete(req: AuthRequest, res: Response, next: NextFunction) {
+  delete = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       let userID = 0;
       if (typeof req.user !== 'string') {
@@ -66,6 +60,5 @@ export default class CommentController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 }

@@ -1,8 +1,21 @@
 import { Op } from 'sequelize';
-import { Chat, Message } from '../database/models';
+
+import { Chat, Message, MessageInstance } from '../database/models';
 import ApiError from '../exceptions/api.error';
 
-export default class MessageService {
+export interface IMessageService {
+  getMessage: (
+    chatId: number,
+    userId: number
+  ) => Promise<Array<MessageInstance>>;
+  addMessage: (
+    chatId: number,
+    userId: number,
+    message: string
+  ) => Promise<MessageInstance>;
+}
+
+export default class MessageService implements IMessageService {
   getMessage = async (chatId: number, userId: number) => {
     const chat = await Chat.findOne({
       where: {

@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import FriendController from '../controllers/friend.controller';
 import authentication from '../middlewares/auth.middleware';
 

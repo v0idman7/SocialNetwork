@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import CommentController from '../controllers/comment.controller';
 import authentication from '../middlewares/auth.middleware';
 

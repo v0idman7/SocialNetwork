@@ -1,16 +1,17 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
+
 import ApiError from '../exceptions/api.error';
 import { AuthRequest } from '../middlewares/auth.middleware';
 import ProfileService from '../services/profile.service';
 
 export default class ProfileController {
-  service;
+  private service = new ProfileService();
 
-  constructor() {
-    this.service = new ProfileService();
-  }
-
-  async getProfileData(req: AuthRequest, res: Response, next: NextFunction) {
+  getProfileData = async (
+    req: AuthRequest,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       let userID = 0;
       if (typeof req.user !== 'string') {
@@ -26,10 +27,13 @@ export default class ProfileController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 
-  async updateProfileData(req: AuthRequest, res: Response, next: NextFunction) {
+  updateProfileData = async (
+    req: AuthRequest,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       let userID = 0;
       if (typeof req.user !== 'string') {
@@ -47,6 +51,5 @@ export default class ProfileController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 }

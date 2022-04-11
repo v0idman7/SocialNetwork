@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { Router } from 'express';
+
 import { User } from '../database/models';
 import ApiError from '../exceptions/api.error';
 import imageMiddleware from '../middlewares/image.middleware';

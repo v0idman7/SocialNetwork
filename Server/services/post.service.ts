@@ -1,15 +1,40 @@
 import fs from 'fs';
 import path from 'path';
 import { Op } from 'sequelize';
+
 import { LikePost } from '../database/models';
-import { Post } from '../database/models/Post';
+import { Post, PostInstance } from '../database/models/Post';
 import { User } from '../database/models/User';
 import ApiError from '../exceptions/api.error';
 
 const pathImages = path.resolve(__dirname, '../images');
 
-export default class PostService {
-  async getUserPost(userID: number, page: number) {
+export interface IPostService {
+  getUserPost: (userID: number, page: number) => Promise<Array<PostInstance>>;
+  getUserAndFriendsPost: (
+    userID: number,
+    page: number
+  ) => Promise<Array<PostInstance>>;
+  getFriendsPost: (
+    userID: number,
+    page: number
+  ) => Promise<Array<PostInstance>>;
+  add: (
+    userID: number,
+    text: string,
+    filesname: string
+  ) => Promise<PostInstance | null>;
+  update: (
+    userID: number,
+    postID: number,
+    text: string,
+    photo: string
+  ) => Promise<[number, Array<PostInstance>]>;
+  delete: (userID: number, postID: number) => Promise<number>;
+}
+
+export default class PostService implements IPostService {
+  getUserPost = async (userID: number, page: number) => {
     const user = await User.findOne({ where: { id: userID } });
     if (!user) {
       throw ApiError.BadRequest('Такого пользователя не существует');
@@ -32,9 +57,9 @@ export default class PostService {
     });
 
     return result;
-  }
+  };
 
-  async getUserAndFriendsPost(userID: number, page: number) {
+  getUserAndFriendsPost = async (userID: number, page: number) => {
     const user = await User.findOne({
       where: { id: userID },
     });
@@ -68,9 +93,9 @@ export default class PostService {
       order: [['id', 'DESC']],
     });
     return result;
-  }
+  };
 
-  async getFriendsPost(userID: number, page: number) {
+  getFriendsPost = async (userID: number, page: number) => {
     console.log('friend');
     const user = await User.findOne({ where: { id: userID } });
     if (!user) {
@@ -97,9 +122,9 @@ export default class PostService {
       order: [['id', 'DESC']],
     });
     return result;
-  }
+  };
 
-  async add(userID: number, text: string, filesname: string) {
+  add = async (userID: number, text: string, filesname: string) => {
     const user = await User.findOne({ where: { id: userID } });
     if (!user) {
       throw ApiError.BadRequest('Такого пользователя не существует');
@@ -124,9 +149,14 @@ export default class PostService {
     });
 
     return result;
-  }
+  };
 
-  async update(userID: number, postID: number, text: string, photo: string) {
+  update = async (
+    userID: number,
+    postID: number,
+    text: string,
+    photo: string
+  ) => {
     const post = await Post.findOne({ where: { id: postID } });
     if (!post) {
       throw ApiError.BadRequest('Такого поста не существует');
@@ -142,9 +172,9 @@ export default class PostService {
       { where: { id: postID } }
     );
     return updatedPost;
-  }
+  };
 
-  async delete(userID: number, postID: number) {
+  delete = async (userID: number, postID: number) => {
     const post = await Post.findOne({ where: { id: postID } });
     if (!post) {
       throw ApiError.BadRequest('Такого поста не существует');
@@ -154,16 +184,15 @@ export default class PostService {
     }
     const imgArr = post.photo.split(' ');
     console.log(imgArr);
-    const deletedLike = await LikePost.destroy({ where: { post_id: postID } });
-    const deletedPost = await Post.destroy({ where: { id: postID } }).then(() =>
-      imgArr.forEach(
-        (img) =>
-          img &&
-          fs.unlink(`${pathImages}/${img}`, (err) => {
-            if (err) throw err;
-          })
-      )
+    await LikePost.destroy({ where: { post_id: postID } });
+    const deletedPost = await Post.destroy({ where: { id: postID } });
+    imgArr.forEach(
+      (img) =>
+        img &&
+        fs.unlink(`${pathImages}/${img}`, (err) => {
+          if (err) throw err;
+        })
     );
     return deletedPost;
-  }
+  };
 }

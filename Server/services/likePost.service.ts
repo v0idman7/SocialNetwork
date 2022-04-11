@@ -1,10 +1,33 @@
-import { LikePost } from '../database/models/LikePost';
+import { LikePost, LikePostInstance } from '../database/models/LikePost';
 import { Post } from '../database/models/Post';
 import { User } from '../database/models/User';
 import ApiError from '../exceptions/api.error';
 
-export default class LikePostService {
-  async get(postID: number) {
+export interface ILikePostService {
+  get: (postID: number) => Promise<Array<LikePostInstance>>;
+  add: (
+    postID: number,
+    userID: number,
+    like: boolean
+  ) => Promise<
+    | {
+        newLike: null;
+        change?: undefined;
+      }
+    | {
+        newLike: [number, Array<LikePostInstance>];
+        change: boolean;
+      }
+    | {
+        newLike: LikePostInstance;
+        change: boolean;
+      }
+  >;
+  delete: (userID: number, likePostID: number) => Promise<number>;
+}
+
+export default class LikePostService implements ILikePostService {
+  get = async (postID: number) => {
     const post = await Post.findOne({ where: { id: postID } });
     if (!post) {
       throw ApiError.BadRequest('Такого поста не существует');
@@ -15,9 +38,9 @@ export default class LikePostService {
     });
 
     return result;
-  }
+  };
 
-  async add(postID: number, userID: number, like: boolean) {
+  add = async (postID: number, userID: number, like: boolean) => {
     const user = await User.findOne({ where: { id: userID } });
     if (!user) {
       throw ApiError.BadRequest('Такого пользователя не существует');
@@ -47,9 +70,9 @@ export default class LikePostService {
       user_id: userID,
     });
     return { newLike, change: false };
-  }
+  };
 
-  async delete(userID: number, likePostID: number) {
+  delete = async (userID: number, likePostID: number) => {
     const likePost = await LikePost.findOne({ where: { id: likePostID } });
     if (!likePost) {
       throw ApiError.BadRequest('Вы не поставили лайк');
@@ -61,5 +84,5 @@ export default class LikePostService {
       where: { id: likePostID },
     });
     return deletedLikePost;
-  }
+  };
 }

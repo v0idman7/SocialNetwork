@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import PostController from '../controllers/post.controller';
 import authentication from '../middlewares/auth.middleware';
 

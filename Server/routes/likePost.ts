@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import LikePostController from '../controllers/likePost.controller';
 import authentication from '../middlewares/auth.middleware';
 

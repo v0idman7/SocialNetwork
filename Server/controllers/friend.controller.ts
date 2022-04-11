@@ -1,16 +1,13 @@
-import { Request, Response, NextFunction, query } from 'express';
+import { Response, NextFunction } from 'express';
+
 import ApiError from '../exceptions/api.error';
 import { AuthRequest } from '../middlewares/auth.middleware';
 import FriendService from '../services/friend.service';
 
 export default class FriendController {
-  service;
+  private service = new FriendService();
 
-  constructor() {
-    this.service = new FriendService();
-  }
-
-  async getFriends(req: AuthRequest, res: Response, next: NextFunction) {
+  getFriends = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       let userID = 0;
       if (typeof req.user !== 'string') {
@@ -21,10 +18,9 @@ export default class FriendController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 
-  async checkFriend(req: AuthRequest, res: Response, next: NextFunction) {
+  checkFriend = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       let userID = 0;
       if (typeof req.user !== 'string') {
@@ -39,10 +35,9 @@ export default class FriendController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 
-  async getOther(req: AuthRequest, res: Response, next: NextFunction) {
+  getOther = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       let userID = 0;
       if (typeof req.user !== 'string') {
@@ -53,10 +48,9 @@ export default class FriendController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 
-  async add(req: AuthRequest, res: Response, next: NextFunction) {
+  add = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       let userID = 0;
       if (typeof req.user !== 'string') {
@@ -71,10 +65,9 @@ export default class FriendController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 
-  async delete(req: AuthRequest, res: Response, next: NextFunction) {
+  delete = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       let userID = 0;
       if (typeof req.user !== 'string') {
@@ -89,10 +82,9 @@ export default class FriendController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 
-  async getAll(req: AuthRequest, res: Response, next: NextFunction) {
+  getAll = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       let userID = 0;
       if (typeof req.user !== 'string') {
@@ -109,6 +101,5 @@ export default class FriendController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 }

@@ -1,7 +1,8 @@
-import ApiError from '../exceptions/api.error';
-import { User } from '../database/models/User';
-import { Social } from '../database/models/Social';
 import { Op } from 'sequelize';
+
+import ApiError from '../exceptions/api.error';
+import { User, UserInstance } from '../database/models/User';
+import { Social, SocialInstance } from '../database/models/Social';
 
 interface EditProfileValues {
   firstName: string;
@@ -15,8 +16,21 @@ interface EditProfileValues {
   linkedIn: string;
 }
 
-export default class ProfileService {
-  async getUserData(id: number) {
+export interface IProfileService {
+  getUserData: (id: number) => Promise<UserInstance>;
+  getProfileData: (id: number) => Promise<{
+    user: UserInstance;
+    friends: Array<UserInstance>;
+    social: SocialInstance | null;
+  }>;
+  updateProfileData: (
+    id: number,
+    profile: EditProfileValues
+  ) => Promise<number | false>;
+}
+
+export default class ProfileService implements IProfileService {
+  getUserData = async (id: number) => {
     const userData = await User.findOne({
       attributes: { exclude: ['password'] },
       where: { id },
@@ -27,9 +41,9 @@ export default class ProfileService {
     }
 
     return userData;
-  }
+  };
 
-  async getProfileData(id: number) {
+  getProfileData = async (id: number) => {
     const userData = await User.findOne({
       attributes: { exclude: ['password'] },
       where: { id },
@@ -57,9 +71,9 @@ export default class ProfileService {
     };
 
     return result;
-  }
+  };
 
-  async updateProfileData(id: number, profile: EditProfileValues) {
+  updateProfileData = async (id: number, profile: EditProfileValues) => {
     const userData = await User.findOne({
       where: { id },
     });
@@ -109,5 +123,5 @@ export default class ProfileService {
       return id;
     }
     return false;
-  }
+  };
 }

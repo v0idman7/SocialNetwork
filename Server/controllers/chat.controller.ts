@@ -1,16 +1,13 @@
 import { Response, NextFunction } from 'express';
+
 import ApiError from '../exceptions/api.error';
 import { AuthRequest } from '../middlewares/auth.middleware';
 import ChatService from '../services/chat.service';
 
 export default class ChatController {
-  service;
+  private service = new ChatService();
 
-  constructor() {
-    this.service = new ChatService();
-  }
-
-  async get(req: AuthRequest, res: Response, next: NextFunction) {
+  get = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       let userID = 0;
       if (typeof req.user !== 'string') {
@@ -21,10 +18,9 @@ export default class ChatController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 
-  async add(req: AuthRequest, res: Response, next: NextFunction) {
+  add = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       let userID = 0;
       if (typeof req.user !== 'string') {
@@ -39,10 +35,9 @@ export default class ChatController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 
-  async delete(req: AuthRequest, res: Response, next: NextFunction) {
+  delete = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
       let userID = 0;
       if (typeof req.user !== 'string') {
@@ -57,6 +52,5 @@ export default class ChatController {
     } catch (e) {
       next(e);
     }
-    return null;
-  }
+  };
 }
